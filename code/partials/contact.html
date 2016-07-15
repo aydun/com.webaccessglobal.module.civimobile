@@ -1,0 +1,10 @@
+<ul class='subheader menu horizontal-menu'>
+    <li class='left icon' ui-sref='^.^.list'><i class='icon-back'></i></li>
+    <li class='middle-item'><h3>{{ contact.contact.display_name }}</h3></li>
+    <li class='right icon' ui-sref='^.edit'><i class='icon-edit'></i></li>
+</ul>
+<div class='content'>
+    <div ng-repeat='f in contact.fields'>
+        <p>{{ f.label }}: {{ contact.contact[f.field_name] }}</p>
+    </div>
+</div>

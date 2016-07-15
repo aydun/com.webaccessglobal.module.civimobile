@@ -1,0 +1,20 @@
+<ul class='subheader menu horizontal-menu'>
+    <li class='left icon' ui-sref='^.view'><i class='icon-back'></i></li>
+    <li class='middle-item'><h3>Event attendees</h3></li>
+    <li class='right icon' ng-click='event.addParticipant()'><i class='icon-new-user'></i></li>
+</ul>
+<div class='content'>
+    <div class='tabs'>
+        <div class='tab' ng-click='event.showRegistered()' ng-class='event.selected(true, false)'>Registered</div>
+        <div class='tab' ng-click='event.showCheckedIn()' ng-class='event.selected(false, true)'>Checked in</div>
+        <div class='tab' ng-click='event.showAll()' ng-class='event.selected(true, true)'>Show all</div>
+    </div>
+    <div class='list-item' ng-repeat='p in event.participants' ng-show='!event.loadingParticipants && (p.checkedIn && event.displayCheckedIn) || (!p.checkedIn && event.displayRegistered)'>
+        <div class='checkbox'>
+            <input type='checkbox' ng-model='p.checkedIn' ng-change='event.updateParticipant(p)'>
+        </div>
+        <div class='list-item-label shift-right'><p>{{ p.display_name }}</p></div>
+    </div>
+    <div class='empty-list' ng-show='event.participants.length == 0 && event.loadingParticipants == 0'><p>No results</p></div>
+    <div class='empty-list' ng-show='event.loadingParticipants'><p>Loading...</p></div>
+</div>

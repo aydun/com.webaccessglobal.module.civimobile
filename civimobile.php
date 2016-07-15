@@ -57,18 +57,18 @@ function civimobile_civicrm_navigationMenu( &$params ) {
             if($name == 'Customize Data and Screens') {
               $params[$k]['child'][$k1]['child'][] = array(
                 'attributes' => array(
-                  'label' => 'CiviMobile', 
+                  'label' => 'CiviMobile',
                   'name' => 'CiviMobile Options',
                   'url' => 'civicrm/admin/setting/mobile',
                   'permission' => 'administer CiviCRM',
                   'operator' => '',
                   'separator' => '',
-                  'parentID' => $k1, 
-                  'navID' => $key, 
+                  'parentID' => $k1,
+                  'navID' => $key,
                   'active' => 1),
                 'child' => NULL,
               );
-            } 
+            }
           }
         }
       }

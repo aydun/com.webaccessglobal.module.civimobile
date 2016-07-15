@@ -1,7 +1,76 @@
 <?php
 class civimobile {
   static public function home() {
-    require_once 'civimobile.home.php';
+    require_once 'index.php';
+    exit;
+  }
+
+  static public function homePartial() {
+    require_once 'partials/home.html';
+    exit;
+  }
+  static public function contactsPartial() {
+    require_once 'partials/contacts.html';
+    exit;
+  }
+  static public function newContactDialog() {
+    require_once 'partials/dialogs/new_contact.html';
+    exit;
+  }
+  static public function contactGeoDialog() {
+    require_once 'partials/dialogs/contact_geo_search.html';
+    exit;
+  }
+  static public function contactPartial() {
+    require_once 'partials/contact.html';
+    exit;
+  }
+  static public function editContactPartial() {
+    require_once 'partials/edit_contact.html';
+    exit;
+  }
+  static public function newContactPartial() {
+    require_once 'partials/new_contact.html';
+    exit;
+  }
+  static public function contactFormPartial() {
+    require_once 'partials/contact_form.html';
+    exit;
+  }
+  static public function eventsPartial() {
+    require_once 'partials/events.html';
+    exit;
+  }
+  static public function eventPartial() {
+    require_once 'partials/event.html';
+    exit;
+  }
+  static public function editEventPartial() {
+    require_once 'partials/edit_event.html';
+    exit;
+  }
+  static public function eventAttendeesPartial() {
+    require_once 'partials/event_attendees.html';
+    exit;
+  }
+  static public function newParticipantDialog() {
+    require_once 'partials/dialogs/new_participant.html';
+    exit;
+  }
+  static public function newMessageDialog() {
+    require_once 'partials/dialogs/message.html';
+    exit;
+  }
+  static public function membershipsPartial() {
+    require_once 'partials/memberships.html';
+    exit;
+  }
+  static public function donationsPartial() {
+    require_once 'partials/donations.html';
+    exit;
+  }
+  static public function surveysPartial() {
+    require_once 'partials/surveys.html';
     exit;
   }
 
@@ -13,11 +82,6 @@ class civimobile {
     else {
       require_once 'civimobile.contact.html';
     }
-    exit;
-  }
-
-  static public function participantCheckin() {
-    require_once 'civimobile.participant_checkin.html';
     exit;
   }
 

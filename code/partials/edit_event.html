@@ -1,0 +1,32 @@
+<ul class='subheader menu horizontal-menu'>
+    <li class='left icon' ui-sref='^.view'><i class='icon-back'></i></li>
+    <li class='middle-item'><h3>Edit <i>{{ event.event.event_title }}</i></h3></li>
+    <li class='right icon' ng-click='event.save()'><i class='icon-save'></i></li>
+</ul>
+<!--<div class='error' ng-show='event.error'></div>-->
+<div class='content'>
+    <form class='pure-form pure-form-aligned'>
+        <legend>Address</legend>
+        <div class='pure-control-group'>
+            <label for='address.street_address'>Street address</label>
+            <input type='text' id='address.street_address' ng-model='event.address.street_address'>
+        </div>
+        <div class='pure-control-group'>
+            <label for='address.city'>City</label>
+            <input type='text' id='address.city' ng-model='event.address.city'>
+        </div>
+        <div class='pure-control-group'>
+            <label for='address.postal_code'>Postal code</label>
+            <input type='text' id='address.postal_code' ng-model='event.address.postal_code'>
+        </div>
+        <legend>Event details</legend>
+        <div class='pure-control-group' ng-repeat='f in event.fields' ng-switch='f.html.type'>
+            <label for='{{f.field_name}}'>{{ f.label }}</label>
+            <input ng-switch-default type='text' id='{{f.field_name}}' ng-model='event.event[f.field_name]' ng-required='f.required'>
+            <textarea ng-switch-when='TextArea' id='{{f.field_name}}' ng-model='event.event[f.field_name]' ng-required='f.required'>
+            <input ng-switch-when='Select Date' type='datetime' id='{{f.field_name}}' ng-model='event.event[f.field_name]'>
+            <select ng-switch-when='Select' id='{{f.field_name}}' ng-model='event.event[f.field_name]' ng-options='(o.key).toString() as o.value for o in f.options'></select>
+            <input ng-switch-when='CheckBox' type='checkbox' id='{{f.field_name}}' ng-model='event.event[f.field_name]' ng-true-value='"1"', ng-false-value='"0"'>
+        </div>
+    </form>
+</div>

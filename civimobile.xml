@@ -8,20 +8,76 @@
     <is_public>true</is_public>
   </item>
   <item>
-    <path>civicrm/mobile/login</path>
-    <page_callback>civimobile::login</page_callback>
+    <path>civicrm/mobile/partials/home</path>
+    <page_callback>civimobile::homePartial</page_callback>
+  </item>
+  <item>
+    <path>civicrm/mobile/partials/contacts</path>
+    <page_callback>civimobile::contactsPartial</page_callback>
+  </item>
+  <item>
+    <path>civicrm/mobile/partials/dialogs/new_contact</path>
+    <page_callback>civimobile::newContactDialog</page_callback>
+  </item>
+  <item>
+    <path>civicrm/mobile/partials/dialogs/contact_geo_search</path>
+    <page_callback>civimobile::contactGeoDialog</page_callback>
+  </item>
+  <item>
+    <path>civicrm/mobile/partials/contact</path>
+    <page_callback>civimobile::contactPartial</page_callback>
+  </item>
+  <item>
+    <path>civicrm/mobile/partials/edit_contact</path>
+    <page_callback>civimobile::editContactPartial</page_callback>
+  </item>
+  <item>
+    <path>civicrm/mobile/partials/new_contact</path>
+    <page_callback>civimobile::newContactPartial</page_callback>
+  </item>
+  <item>
+    <path>civicrm/mobile/partials/contact_form</path>
+    <page_callback>civimobile::contactFormPartial</page_callback>
+  </item>
+  <item>
+    <path>civicrm/mobile/partials/events</path>
+    <page_callback>civimobile::eventsPartial</page_callback>
+  </item>
+  <item>
+    <path>civicrm/mobile/partials/event</path>
+    <page_callback>civimobile::eventPartial</page_callback>
+  </item>
+  <item>
+    <path>civicrm/mobile/partials/event_attendees</path>
+    <page_callback>civimobile::eventAttendeesPartial</page_callback>
+  </item>
+  <item>
+    <path>civicrm/mobile/partials/edit_event</path>
+    <page_callback>civimobile::editEventPartial</page_callback>
+  </item>
+  <item>
+    <path>civicrm/mobile/partials/dialogs/new_participant</path>
+    <page_callback>civimobile::newParticipantDialog</page_callback>
+  </item>
+  <item>
+    <path>civicrm/mobile/partials/dialogs/message</path>
+    <page_callback>civimobile::newMessageDialog</page_callback>
+  </item>
+  <item>
+    <path>civicrm/mobile/partials/surveys</path>
+    <page_callback>civimobile::surveysPartial</page_callback>
+  </item>
+  <item>
+    <path>civicrm/mobile/partials/memberships</path>
+    <page_callback>civimobile::membershipsPartial</page_callback>
+  </item>
+  <item>
+    <path>civicrm/mobile/partials/donations</path>
+    <page_callback>civimobile::donationsPartial</page_callback>
   </item>
   <item>
     <path>civicrm/mobile/logout</path>
     <page_callback>civimobile::logout</page_callback>
-  </item>
-  <item>
-    <path>civicrm/mobile/contact</path>
-    <page_callback>civimobile::contacts</page_callback>
-  </item>
-  <item>
-    <path>civicrm/mobile/participant/checkin</path>
-    <page_callback>civimobile::participantCheckin</page_callback>
   </item>
   <item>
     <path>civicrm/mobile/survey/contacts</path>

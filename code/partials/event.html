@@ -1,0 +1,12 @@
+<ul class='subheader menu horizontal-menu'>
+    <li class='left icon' ui-sref='^.^.list'><i class='icon-back'></i></li>
+    <li class='middle-item'><h3>{{ event.event.title }}</h3></li>
+    <li class='right icon' ui-sref='^.edit'><i class='icon-edit'></i></li>
+    <li class='right icon' ui-sref='^.attendees'><i class='icon-users'></i></li>
+</ul>
+<div class='content'>
+    <p>{{ 'Address: ' + event.address.street_address + ', ' + event.address.city + ', ' + event.address.postal_code }}</p>
+    <p>{{ 'From ' + event.event.start_date + ' until ' + event.event.end_date + '.'}}</p>
+    <p>{{ event.event.summary }}</p>
+    <!--<p>{{ event.event.full_text }}</p>-->
+</div>

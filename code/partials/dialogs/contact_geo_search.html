@@ -1,0 +1,17 @@
+<div class='dialog-center'>
+    <form class='pure-form' ng-submit='closeThisDialog(ngDialogData)'>
+        Find contacts within
+        <input type='number' ng-model='ngDialogData.distance' required>
+        <select ng-model='ngDialogData.unit' required>
+            <option>miles</option>
+            <option>km</option>
+        </select>
+        <button type='submit' class='pure-button pure-button-primary'>Go</button>
+    </form>
+    <hr>
+    <form class='pure-form' ng-submit='closeThisDialog(ngDialogData)'>
+        <!--Find contacts in-->
+        <input type='text' placeholder='Postcode' ng-model='ngDialogData.postcode' required>
+        <button type='submit' class='pure-button pure-button-primary'>Go</button>
+    </form>
+</div>
