@@ -19,27 +19,25 @@ angular.module('civimobile').controller('ContactsController', ['$state', '$state
 
     this.search = function () {
 
-        // var posRegex = /^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?),\s*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)$/
-        var emailRegex = /^\S+@\S+$/
-        var phoneRegex = /[0-9]{5,15}/
+        var emailRegex = /^\S+@\S+$/;
+        var phoneRegex = /[0-9]{5,15}/;
 
+        var q = this.query;
         var searchField;
-        /*if (posRegex.test(this.query)) {
-            console.log('position');
-        } else*/ if (emailRegex.test(this.query)) {
-            console.log('email');
+        if (emailRegex.test(this.query)) {
             searchField = 'email';
         } else if (this.query.replace(/\d/g,'').length < 4 && phoneRegex.test(this.query.replace(/\D/g,''))) {
-            console.log('phone number');
             searchField = 'phone';
+            q = this.query.replace(/^[0]/, ''); // Remove inital zero if there
         } else {
-            console.log('name');
             searchField = 'sort_name';
         }
 
+        console.log(q);
+
         this.loading += 1;
         this.contacts = [];
-        ApiService.contactSearch(this.query, searchField).then(function (data) {
+        ApiService.contactSearch(q, searchField).then(function (data) {
             if (x.loading > 0) {    // Necessary as geolocation may set loading to 0 directly.
                 x.loading -= 1;
             }
