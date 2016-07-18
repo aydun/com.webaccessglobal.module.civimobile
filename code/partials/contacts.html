@@ -1,6 +1,6 @@
 <ul class='subheader menu horizontal-menu'>
     <li class='left icon' ng-click='contacts.back()'><i class='icon-back'></i></li>
-    <li ng-hide='contacts.geoHeader' class='middle-item'><input class='holo' type='search' name='contacts_search' placeholder='Search' ng-model='contacts.query' ng-change='contacts.search()' /></li>
+    <li ng-hide='contacts.geoHeader' class='middle-item'><input class='holo' type='search' name='contacts_search' placeholder='Search' ng-model='contacts.query' ng-change='contacts.search()' ng-model-options='{updateOn:"default blur",debounce:{"default":150,"blur":0}}'/></li>
     <li ng-show='contacts.geoHeader' class='middle-item'><h3>{{ contacts.geoHeader }}</h3></li>
     <li class='right icon' ng-click='contacts.geoSearch()'><i class='icon-location'></i></li>
     <li class='right icon' ng-dialog='mobile/partials/dialogs/new_contact'><i class='icon-new-user'></i></li>

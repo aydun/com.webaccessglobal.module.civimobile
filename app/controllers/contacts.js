@@ -28,12 +28,14 @@ angular.module('civimobile').controller('ContactsController', ['$state', '$state
             searchField = 'email';
         } else if (this.query.replace(/\d/g,'').length < 4 && phoneRegex.test(this.query.replace(/\D/g,''))) {
             searchField = 'phone';
-            q = this.query.replace(/^[0]/, ''); // Remove inital zero if there
+            // Remove inital zero if there is one and replace special chars with a wildcard to match as many
+            // different phone number formats as possible.
+            q = {
+                LIKE: '%' + this.query.replace(/^[0]/, '').replace(/[ #+.-]{1,}/g, '%') + '%'
+            };
         } else {
-            searchField = 'sort_name';
+            searchField = 'display_name';
         }
-
-        console.log(q);
 
         this.loading += 1;
         this.contacts = [];

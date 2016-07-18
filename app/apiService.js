@@ -95,9 +95,10 @@ angular.module('civimobile').service('ApiService', ['$http', '$q', function ($ht
         var json = {
                 version: 3,
                 return: ['display_name','phone','email','contact_type'],
+                sort: 'sort_name',
                 sequential: 1
             }
-        json[searchField] = { 'LIKE': '%' + q + '%' };
+        json[searchField] = q;
         var params = {
             entity: 'Contact',
             action: 'get',
