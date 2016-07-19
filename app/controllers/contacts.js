@@ -18,7 +18,6 @@ angular.module('civimobile').controller('ContactsController', ['$state', '$state
     }
 
     this.search = function () {
-
         var emailRegex = /^\S+@\S+$/;
         var phoneRegex = /[0-9]{5,15}/;
 
@@ -63,7 +62,7 @@ angular.module('civimobile').controller('ContactsController', ['$state', '$state
                 x.loading += 1;
                 x.contacts = [];
                 if (value.postcode) {
-                    x.geoHeader = 'Contacts in ' + value.postcode;
+                    x.geoHeader = 'Contacts in ' + value.postcode.toUpperCase();
                     ApiService.getContactsIn(value.postcode).then(function (data) {
                         x.loading = 0;  // If we're doing a geolocation search, we are overriding any other pending searches.
                         x.contacts = data;

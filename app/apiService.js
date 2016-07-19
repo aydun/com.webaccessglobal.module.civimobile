@@ -134,7 +134,7 @@ angular.module('civimobile').service('ApiService', ['$http', '$q', function ($ht
             action: 'get',
             json: JSON.stringify({
                 version: 3,
-                postal_code: postcode,
+                postal_code: {'LIKE': postcode + '%'}, // Match partially completed postcodes.
                 'api.contact.getsingle': { contact_id: '$value.contact_id' },
                 sequential: 1
             })
