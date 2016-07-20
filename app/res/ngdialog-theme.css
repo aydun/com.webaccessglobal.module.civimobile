@@ -99,6 +99,7 @@
   text-align: center;
   top: 3px;
   width: 30px;
+  z-index: 15;
 }
 
 .ngdialog.ngdialog-theme .ngdialog-close:hover:before,
