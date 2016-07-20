@@ -60,7 +60,7 @@
     height: 3.5rem;
     width: 3.5rem;
     display: inline-block;
-    font-size: 175%;
+    font-size: 1.75rem;
     text-align: center;
     color: #555;
     margin: 0;
@@ -106,7 +106,6 @@
 }
 input.holo[type='search'] {
     width: 100%;
-    max-width: 20em;
     margin: 0.75rem auto;
     padding: 0.25em 0 0.375em 0;
     font-size: 112.5%;
@@ -223,7 +222,9 @@ legend {
     width: 100%;
     height: 3.5em;
     background-color: #DDD;
-    border-bottom: 1px solid #DDD;
+    border-bottom: 1px solid #CCC;
+    border-radius: 0.5em 0.5em 0 0;
+    z-index: 10;
 }
 .dialog-content {
     position: fixed;
@@ -250,3 +251,30 @@ form.pure-form > input[type='text'] {
     color: #FFF;
     background-color: #81C459;
 }
+.input-left {
+    position: absolute;
+    width: 3.5rem;
+    left: 0;
+}
+.input-right {
+    position: absolute;
+    left: 3.75rem;
+    right: 0;
+}
+.dropdown {
+    font-family: 'fontello', sans-serif;
+}
+.dropdown-content {
+    display: none;
+    position: absolute;
+    width: 100%;
+    background-color: #EEE;
+    border: 1px solid #DDD;
+    box-sizing: border-box;
+    z-index: 1010;
+}
+.dropdown:hover .dropdown-content,
+.dropdown:focus .dropdown-content {
+    display: block;
+}
+

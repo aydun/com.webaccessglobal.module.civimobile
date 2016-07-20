@@ -1,5 +1,14 @@
 <ul class='dialog-header menu horizontal-menu'>
-    <li class='middle-item'><input class='holo' type='search' name='contacts_search' placeholder='Search' ng-model='contacts.query' ng-change='contacts.search()' /></li>
+    <li class='middle-item'>
+        <div class='input-left dropdown icon'>
+            <i ng-class='"icon-" + contacts.searchFields[0]' ng-click='contacts.changeField(contacts.searchFields[0], true)'></i>
+            <div class='dropdown-content'>
+                <div class='icon' ng-click='contacts.changeField(contacts.searchFields[1], true)'><i ng-class='"icon-" + contacts.searchFields[1]'></i></div>
+                <div class='icon' ng-click='contacts.changeField(contacts.searchFields[2], true)'><i ng-class='"icon-" + contacts.searchFields[2]'></i></div>
+            </div>
+        </div>
+        <div class='input-right'><input class='holo' type='search' name='contacts_search' placeholder='Search' ng-model='contacts.query' ng-change='contacts.search()' ng-model-options='{updateOn:"default blur",debounce:{"default":150,"blur":0}}'/></div>
+    </li>
 </ul>
 <div class='dialog-content'>
     <div class='list-item' ng-repeat='c in contacts.contacts'>

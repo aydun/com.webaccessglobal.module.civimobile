@@ -147,5 +147,5 @@
 .icon-back:before { content: '\e806'; } /* '' */
 .icon-phone:before { content: '\e807'; } /* '' */
 .icon-email:before { content: '\e808'; } /* '' */
-.icon-users:before { content: '\e809'; } /* '' */
+.icon-users:before, .icon-name:before { content: '\e809'; } /* '' */
 .icon-loading:before { content: '\e832'; } /* '' */
