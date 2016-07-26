@@ -13,7 +13,7 @@
         <div class='checkbox'>
             <input type='checkbox' ng-model='p.checkedIn' ng-change='event.updateParticipant(p)'>
         </div>
-        <div class='list-item-label shift-right'><p>{{ p.display_name }}</p></div>
+        <div class='list-item-label shift-right' ng-click='p.checkedIn = !(p.checkedIn); event.updateParticipant(p)'><p>{{ p.display_name }}</p></div>
     </div>
     <div class='empty-list' ng-show='event.participants.length == 0 && event.loadingParticipants == 0'><p>No results</p></div>
     <div class='empty-list' ng-show='event.loadingParticipants'><p>Loading...</p></div>

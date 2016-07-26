@@ -65,9 +65,8 @@ angular.module('civimobile').controller('EventController', ['$state', '$statePar
                     $state.go('contacts.detail.contribution', { id: p.contact_id, type: 4, currency: x.event.currency, source: x.event.event_title + ' : check in at event' });
                 }
             });
-        } else {
-            ApiService.updateParticipant(p.participant_id, p.checkedIn, p.payLater);
         }
+        ApiService.updateParticipant(p.participant_id, p.checkedIn, p.payLater);
         // FIXME deal with errors/notify of success.
     }
 
