@@ -1,5 +1,5 @@
 'use strict';
-angular.module('civimobile').controller('EventController', ['$state', '$stateParams', 'ApiService', 'ngDialog', function ($state, $stateParams, ApiService, ngDialog) {
+angular.module('civimobile').controller('EventController', ['$state', '$stateParams', 'ApiService', 'ngDialog', '$previousState', function ($state, $stateParams, ApiService, ngDialog, $previousState) {
     this.id = $stateParams.id
     this.event = {};
     this.address = {};
@@ -54,8 +54,21 @@ angular.module('civimobile').controller('EventController', ['$state', '$statePar
     }
 
     this.updateParticipant = function (p) {
-        // FIXME should alert to collect payment if p.payLater
-        ApiService.updateParticipant(p.participant_id, p.checkedIn, p.payLater);
+        if (p.checkedIn && p.payLater) {
+            ngDialog.open({ template: 'mobile/partials/dialogs/check_in_participant', data: p })
+            .closePromise.then(function (data) {
+                var code = data.value;
+                if (code == 0) { // No action taken, so revert 'check in'.
+                    return p.checkedIn = false;
+                }
+                if (code == 2) {                                                  // 'event fee' type
+                    $state.go('contacts.detail.contribution', { id: p.contact_id, type: 4, currency: x.event.currency, source: x.event.event_title + ' : check in at event' });
+                }
+            });
+        } else {
+            ApiService.updateParticipant(p.participant_id, p.checkedIn, p.payLater);
+        }
+        // FIXME deal with errors/notify of success.
     }
 
     this.addParticipant = function () {
@@ -76,7 +89,12 @@ angular.module('civimobile').controller('EventController', ['$state', '$statePar
                         return;
                     }
                 }
-                ApiService.addParticipant(x.id, contact.contact_id, false).then(function (p) {
+                var payLater = true;
+                if (!x.is_monetary) {
+                    false;
+                }
+                // Participants are added as 'pay_later' unless the event is free.
+                ApiService.addParticipant(x.id, contact.contact_id, payLater).then(function (p) {
                     p.display_name = contact.display_name;
                     x.participants.unshift(p);
                 });

@@ -4,7 +4,7 @@
         <label for='{{f.field_name}}'>{{ f.label }}</label>
         <input ng-switch-default type='text' id='{{f.field_name}}' ng-model='contact.contact[f.field_name]' ng-required='f.required'>
         <input ng-switch-when='Select Date' type='date' id='{{f.field_name}}' ng-model='contact.contact[f.field_name]'>
-        <select ng-switch-when='Select' id='{{f.field_name}}' ng-model='contact.contact[f.field_name]' ng-options='(o.key).toString() as o.value for o in f.options'></select>
+        <select ng-switch-when='Select' id='{{f.field_name}}' ng-model='contact.contact[f.field_name]' ng-options='(o.key).toString() as o.value for o in f.options' ng-required='f.required'></select>
         <input ng-switch-when='CheckBox' type='checkbox' id='{{f.field_name}}' ng-model='contact.contact[f.field_name]' ng-true-value='"1"', ng-false-value='"0"'>
     </div>
 </form>

@@ -72,8 +72,8 @@
 }
 .middle-item {
     position: absolute;
-    width: 40%;
-    left: 30%;
+    width: 50%;
+    left: 25%;
 }
 .middle-item > h3 {
     font-size: 1.125em;
@@ -163,7 +163,7 @@ input.holo[type='search']:hover, input.holo[type='search']:focus {
     width: 100%;
 }
 .pure-form-aligned textarea {
-    height: 6em;
+    height: 7.85em;
 }
 form.pure-form-aligned.pure-form {
     max-width: 480px;
@@ -277,4 +277,7 @@ form.pure-form > input[type='text'] {
 .dropdown:focus .dropdown-content {
     display: block;
 }
-
+.dropdown-content .icon {
+    box-sizing: border-box;
+    margin: 0 -1px;
+}

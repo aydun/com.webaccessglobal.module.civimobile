@@ -37,6 +37,10 @@ class civimobile {
     require_once 'partials/contact_form.html';
     exit;
   }
+  static public function newContributionPartial() {
+    require_once 'partials/new_contribution.html';
+    exit;
+  }
   static public function eventsPartial() {
     require_once 'partials/events.html';
     exit;
@@ -51,6 +55,10 @@ class civimobile {
   }
   static public function eventAttendeesPartial() {
     require_once 'partials/event_attendees.html';
+    exit;
+  }
+  static public function checkInParticipantDialog() {
+    require_once 'partials/dialogs/check_in_participant.html';
     exit;
   }
   static public function newParticipantDialog() {

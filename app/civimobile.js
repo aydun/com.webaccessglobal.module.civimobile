@@ -1,5 +1,5 @@
 'use strict';
-angular.module('civimobile', ['ui.router', 'ngDialog'])
+angular.module('civimobile', ['ui.router', 'ngDialog', 'ct.ui.router.extras.core', 'ct.ui.router.extras.previous'])
     .config(['$stateProvider', function ($stateProvider) {
         $stateProvider
             .state('home', {
@@ -45,6 +45,12 @@ angular.module('civimobile', ['ui.router', 'ngDialog'])
             .state('contacts.detail.edit', {
                 url: '/edit',
                 templateUrl: 'mobile/partials/edit_contact'
+            })
+            .state('contacts.detail.contribution', {
+                url: '/contribution?type?amount?currency?status?source',
+                templateUrl: 'mobile/partials/new_contribution',
+                controller: 'ContributionController',
+                controllerAs: 'contribution'
             })
             .state('events', {
                 url: '/events',

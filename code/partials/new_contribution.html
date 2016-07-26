@@ -1,0 +1,15 @@
+<ul class='subheader menu horizontal-menu'>
+    <li class='left icon' ng-click='contribution.back()'><i class='icon-back'></i></li>
+    <li class='middle-item'><h3>Record a new contribution for <i>{{ contact.contact.display_name }}</i></h3></li>
+    <li class='right icon' ng-click='contribution.save()'><i class='icon-save'></i></li>
+</ul>
+<div class='content'>
+    <form class='pure-form pure-form-aligned'>
+        <div class='pure-control-group' ng-repeat='f in contribution.fields' ng-switch='f.html.type'>
+            <label for='{{f.name}}'>{{ f.title }}</label>
+            <select ng-switch-when='Select' id='{{f.name}}' ng-model='contribution.contribution[f.name]' ng-options='key as value for (key, value) in f.options' ng-required='f.required'></select>
+            <input ng-switch-when='Currency' type='number' step='0.01' id='{{f.name}}' ng-model='contribution.contribution[f.name]' ng-required='f.required'>
+            <input ng-switch-default type='text' id='{{f.name}}' ng-model='contribution.contribution[f.name]' ng-required='f.required'>
+        </div>
+    </form>
+</div>

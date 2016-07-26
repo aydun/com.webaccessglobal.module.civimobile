@@ -33,11 +33,15 @@ $includePath = $config->extensionsURL . DIRECTORY_SEPARATOR . 'com.webaccessglob
   <script type="text/javascript" src="<?php print $includePath; ?>libraries/angular.min.js"></script>
   <script type="text/javascript" src="<?php print $includePath; ?>libraries/angular-ui-router.min.js"></script>
   <script type="text/javascript" src="<?php print $includePath; ?>libraries/ngDialog.min.js"></script>
+  <script type="text/javascript" src="<?php print $includePath; ?>libraries/ct-ui-router-extras.core.min.js"></script>
+  <script type="text/javascript" src="<?php print $includePath; ?>libraries/ct-ui-router-extras.transition.min.js"></script>
+  <script type="text/javascript" src="<?php print $includePath; ?>libraries/ct-ui-router-extras.previous.min.js"></script>
   <script type="text/javascript" src="<?php print $includePath; ?>app/civimobile.js"></script>
   <script type="text/javascript" src="<?php print $includePath; ?>app/apiService.js"></script>
   <script type="text/javascript" src="<?php print $includePath; ?>app/controllers/home.js"></script>
   <script type="text/javascript" src="<?php print $includePath; ?>app/controllers/contacts.js"></script>
   <script type="text/javascript" src="<?php print $includePath; ?>app/controllers/contact.js"></script>
+  <script type="text/javascript" src="<?php print $includePath; ?>app/controllers/contribution.js"></script>
   <script type="text/javascript" src="<?php print $includePath; ?>app/controllers/events.js"></script>
   <script type="text/javascript" src="<?php print $includePath; ?>app/controllers/event.js"></script>
   <script type="text/javascript" src="<?php print $includePath; ?>app/controllers/memberships.js"></script>

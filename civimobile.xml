@@ -40,6 +40,10 @@
     <page_callback>civimobile::contactFormPartial</page_callback>
   </item>
   <item>
+    <path>civicrm/mobile/partials/new_contribution</path>
+    <page_callback>civimobile::newContributionPartial</page_callback>
+  </item>
+  <item>
     <path>civicrm/mobile/partials/events</path>
     <page_callback>civimobile::eventsPartial</page_callback>
   </item>
@@ -50,6 +54,10 @@
   <item>
     <path>civicrm/mobile/partials/event_attendees</path>
     <page_callback>civimobile::eventAttendeesPartial</page_callback>
+  </item>
+  <item>
+    <path>civicrm/mobile/partials/dialogs/check_in_participant</path>
+    <page_callback>civimobile::checkInParticipantDialog</page_callback>
   </item>
   <item>
     <path>civicrm/mobile/partials/edit_event</path>

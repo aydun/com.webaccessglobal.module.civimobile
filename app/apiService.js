@@ -229,6 +229,60 @@ angular.module('civimobile').service('ApiService', ['$http', '$q', function ($ht
         });
     }
 
+    this.getContributionFields = function () {
+        var params = {
+            entity: 'Contribution',
+            action: 'getfields',
+            json: JSON.stringify({
+                version: 3,
+                api_action: 'create',
+                return: ['name', 'title', 'html', 'required'],
+                sequential: 1
+            })
+        };
+        return $http.get(URL, { params: params })
+        .then(function success(data) {
+            return data.data.values;
+        }, function error(data, status, headers) {
+            return new Error('Something went wrong.');
+        });
+    }
+
+    this.getContributionFieldOptions = function (field) {
+        var params = {
+            entity: 'Contribution',
+            action: 'getoptions',
+            json: JSON.stringify({
+                version: 3,
+                field: field
+            })
+        };
+        return $http.get(URL, { params: params })
+        .then(function success(data) {
+            return data.data.values;
+        }, function error(data, status, headers) {
+            return new Error('Something went wrong.');
+        });
+    }
+
+    this.saveContribution = function (fields) {
+        // If 'default' currency remove the property; the API will handle this as default.
+        if (fields.currency == '000') { fields.currency = ''; }
+        fields.version = 3;
+        fields.sequential = 1;
+        var params = {
+            entity: 'Contribution',
+            action: 'create',
+            json: JSON.stringify(fields)
+        };
+        return $http.post(URL, null, { params: params, headers: {'Content-Type': 'application/x-www-form-urlencoded'} })
+        .then(function success(data) {
+            return data.data.values[0];
+        }, function error(data, status, headers) {
+            return new Error('Something went wrong.');
+        });
+    }
+
     this.eventSearch = function (q) {
         var params = {
             entity: 'Event',
@@ -344,6 +398,8 @@ angular.module('civimobile').service('ApiService', ['$http', '$q', function ($ht
     }
 
     this.addParticipant = function (eventId, contactId, payLater) {
+        var status = 1;
+        if (payLater) { status = 5; }
         var params = {
             entity: 'Participant',
             action: 'create',
@@ -351,7 +407,7 @@ angular.module('civimobile').service('ApiService', ['$http', '$q', function ($ht
                 version: 3,
                 event_id: eventId,
                 contact_id: contactId,
-                is_pay_later: payLater,
+                status_id: status,
                 sequential: 1
             })
         };
