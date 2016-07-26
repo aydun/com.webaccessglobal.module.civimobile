@@ -1,5 +1,5 @@
 'use strict';
-angular.module('civimobile', ['ui.router', 'ngDialog', 'ct.ui.router.extras.core', 'ct.ui.router.extras.previous'])
+angular.module('civimobile', ['ui.router', 'ngDialog', 'ct.ui.router.extras.core', 'ct.ui.router.extras.previous', 'vs-repeat'])
     .config(['$stateProvider', function ($stateProvider) {
         $stateProvider
             .state('home', {

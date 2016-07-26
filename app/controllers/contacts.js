@@ -1,18 +1,23 @@
 'use strict';
 angular.module('civimobile').controller('ContactsController', ['$state', 'ApiService', 'ngDialog', function ($state, ApiService, ngDialog) {
     this.contacts = [];
-    this.query = '';
+    this.query = ''; // The search string.
+    var q = ''; // The search query parameter sent to the API.
     this.loading = 0; // Number of ongoing 'searches', 0 => loaded
     this.geoHeader = '';
     this.searchFields = ['name', 'email', 'phone'];
     this.searchField = this.searchFields[0];
-    this.manual = false;
+    var f = '' // The search field parameter sent to the API.
+    var manual = false; // Whether the user has overriden the automatic search field detection (name, email, phone).
+    var offset = 0; // We load results in chunks of 30.
+    var loadedAll = false; // Are there any more results to load?
+    this.loadingMore = false; // Are we loading further results?
 
     // Lets us refer to 'this' in promises.
     var x = this;
 
-    this.back = function () {
-        if (this.geoHeader) {
+    this.back = function () {   // We use an ng-show and ng-hide to display the geo header if relevant,
+        if (this.geoHeader) {   // else the standard header.
             this.search();
             this.geoHeader = '';
         } else {
@@ -21,7 +26,7 @@ angular.module('civimobile').controller('ContactsController', ['$state', 'ApiSer
     }
 
     this.changeField = function (newField, setManual) {
-        if (setManual) { this.manual = true; };
+        if (setManual) { manual = true; };
         if (newField != this.searchField) {
             this.searchFields = [newField];
             if ('name' != newField) { this.searchFields.push('name'); }
@@ -33,7 +38,13 @@ angular.module('civimobile').controller('ContactsController', ['$state', 'ApiSer
     }
 
     this.search = function () {
-        if (!this.manual) {
+        this.loading += 1;
+        this.contacts = [];
+        this.loadedAll = false;
+        offset = 0;
+        this.loadingMore = false;
+
+        if (!manual) {
             var emailRegex = /^\S+@\S+$/;
             var phoneRegex = /[0-9]{5,15}/;
 
@@ -46,7 +57,7 @@ angular.module('civimobile').controller('ContactsController', ['$state', 'ApiSer
             }
         }
 
-        var q = this.query;
+        q = this.query;
         if (x.searchField == 'phone') {
             // Remove inital zero if there is one and replace special chars with a wildcard to match as many
             // different phone number formats as possible.
@@ -55,30 +66,49 @@ angular.module('civimobile').controller('ContactsController', ['$state', 'ApiSer
             };
         }
 
-        var field = x.searchField;
-        if (field == 'name') {
-            field = 'display_name';
+        f = x.searchField;
+        if (f == 'name') {
+            f = 'display_name';
         }
 
-        this.loading += 1;
-        this.contacts = [];
-        ApiService.contactSearch(q, field).then(function (data) {
+        ApiService.contactSearch(q, f, offset).then(function (data) {
             if (x.loading > 0) {    // Necessary as geolocation may set loading to 0 directly.
                 x.loading -= 1;
             }
             if (x.loading == 0) {
                 x.contacts = data;
+                if (data.length < 30) {
+                    x.loadedAll = true;
+                }
             }
         });
     }
-    this.search();
+
+    this.loadMore = function () {
+        // Check we're not already loading more contacts and that a search is not ongoing.
+        if (!this.loadingMore && this.loading == 0 && !this.loadedAll) {
+            this.loadingMore = true;
+            offset += 1;
+            console.log('load more ' + offset);
+            var query = this.query;
+            ApiService.contactSearch(q, f, offset).then(function (data) {
+                if (query == x.query && x.loading == 0) {  // Make sure the query hasn't been updated in the mean time.
+                    x.contacts = x.contacts.concat(data);
+                    if (data.length < 30) {
+                        x.loadedAll = true;
+                    }
+                }
+                x.loadingMore = false;
+            });
+        }
+    }
 
     this.geoSearch = function () {
         ngDialog.open({ template: 'mobile/partials/dialogs/contact_geo_search', data: { distance: 50, unit: 'miles' } })
         .closePromise.then(function (data) {
             var value = data.value;
             if (!value.postcode && !value.distance && !value.unit) {
-                return; // If a user just clicks away without providing any detail
+                return; // If a user just clicks away without providing any detail.
             }
             else if (!value.postcode && (!value.distance || !value.unit)) {
                 ngDialog.open({ template: 'mobile/partials/dialogs/message', data: 'Please provide valid location information' });
@@ -114,4 +144,6 @@ angular.module('civimobile').controller('ContactsController', ['$state', 'ApiSer
             }
         });
     }
+
+    this.search(); // Initially load list of contacts with search with empty query.
 }]);

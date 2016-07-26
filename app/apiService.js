@@ -90,12 +90,13 @@ angular.module('civimobile').service('ApiService', ['$http', '$q', function ($ht
         });
     }
 
-    this.contactSearch = function (q, searchField) {
+    this.contactSearch = function (q, searchField, offset) {
         searchField = searchField || 'sort_name';
         var json = {
                 version: 3,
                 return: ['display_name','phone','email','contact_type'],
                 sort: 'sort_name',
+                options: { limit: 30, offset: (offset*30 || 0) },
                 sequential: 1
             }
         json[searchField] = q;

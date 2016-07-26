@@ -36,6 +36,7 @@ $includePath = $config->extensionsURL . DIRECTORY_SEPARATOR . 'com.webaccessglob
   <script type="text/javascript" src="<?php print $includePath; ?>libraries/ct-ui-router-extras.core.min.js"></script>
   <script type="text/javascript" src="<?php print $includePath; ?>libraries/ct-ui-router-extras.transition.min.js"></script>
   <script type="text/javascript" src="<?php print $includePath; ?>libraries/ct-ui-router-extras.previous.min.js"></script>
+  <script type="text/javascript" src="<?php print $includePath; ?>libraries/angular-vs-repeat.min.js"></script>
   <script type="text/javascript" src="<?php print $includePath; ?>app/civimobile.js"></script>
   <script type="text/javascript" src="<?php print $includePath; ?>app/apiService.js"></script>
   <script type="text/javascript" src="<?php print $includePath; ?>app/controllers/home.js"></script>

@@ -11,10 +11,11 @@
     </li>
 </ul>
 <div class='dialog-content'>
-    <div class='list-item' ng-repeat='c in contacts.contacts'>
-        <div class='list-item-label' ng-click='closeThisDialog(c)'><p>{{ c.display_name }}</p></div>
+    <div vs-repeat vs-excess='4' vs-scrolled-to-end='contacts.loadMore()' vs-scrolled-to-end-offset=5>
+        <div class='list-item' ng-repeat='c in contacts.contacts'>
+            <div class='list-item-label' ng-click='closeThisDialog(c)'><p>{{ c.display_name }}</p></div>
+        </div>
     </div>
     <div class='empty-list' ng-show='contacts.contacts.length == 0 && contacts.loading == 0'><p>No results</p></div>
     <div class='empty-list' ng-show='contacts.contacts.length == 0 && contacts.loading > 0'><p>Loading...</p></div>
-    <!--<cm-virtual-list data-provider='contacts'></cm-virtual-list>-->
 </div>
