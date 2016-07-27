@@ -11,7 +11,7 @@
     </li>
 </ul>
 <div class='dialog-content'>
-    <div vs-repeat vs-excess='4' vs-scrolled-to-end='contacts.loadMore()' vs-scrolled-to-end-offset=5>
+    <div vs-repeat vs-excess='4' vs-scrolled-to-end='contacts.loadMore()' vs-scrolled-to-end-offset=5 ng-hide='contacts.loading > 0'>
         <div class='list-item' ng-repeat='c in contacts.contacts'>
             <div class='list-item-label' ng-click='closeThisDialog(c)'><p>{{ c.display_name }}</p></div>
         </div>

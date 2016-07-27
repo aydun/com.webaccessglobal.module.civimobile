@@ -58,15 +58,17 @@ angular.module('civimobile').controller('EventController', ['$state', '$statePar
             ngDialog.open({ template: 'mobile/partials/dialogs/check_in_participant', data: p })
             .closePromise.then(function (data) {
                 var code = data.value;
-                if (code == 0) { // No action taken, so revert 'check in'.
+                if (code != 1 && code != 2) { // No action taken, so revert 'check in'.
                     return p.checkedIn = false;
                 }
                 if (code == 2) {                                                  // 'event fee' type
                     $state.go('contacts.detail.contribution', { id: p.contact_id, type: 4, currency: x.event.currency, source: x.event.event_title + ' : check in at event' });
                 }
+                ApiService.updateParticipant(p.participant_id, p.checkedIn, p.payLater);
             });
+        } else {
+            ApiService.updateParticipant(p.participant_id, p.checkedIn, p.payLater);
         }
-        ApiService.updateParticipant(p.participant_id, p.checkedIn, p.payLater);
         // FIXME deal with errors/notify of success.
     }
 

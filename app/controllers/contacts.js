@@ -89,10 +89,9 @@ angular.module('civimobile').controller('ContactsController', ['$state', 'ApiSer
         if (!this.loadingMore && this.loading == 0 && !this.loadedAll) {
             this.loadingMore = true;
             offset += 1;
-            console.log('load more ' + offset);
             var query = this.query;
             ApiService.contactSearch(q, f, offset).then(function (data) {
-                if (query == x.query && x.loading == 0) {  // Make sure the query hasn't been updated in the mean time.
+                if (query == x.query && x.loading == 0 && !x.geoHeader) {  // Make sure the query hasn't been updated in the mean time.
                     x.contacts = x.contacts.concat(data);
                     if (data.length < 30) {
                         x.loadedAll = true;
@@ -110,36 +109,35 @@ angular.module('civimobile').controller('ContactsController', ['$state', 'ApiSer
             if (!value.postcode && !value.distance && !value.unit) {
                 return; // If a user just clicks away without providing any detail.
             }
-            else if (!value.postcode && (!value.distance || !value.unit)) {
-                ngDialog.open({ template: 'mobile/partials/dialogs/message', data: 'Please provide valid location information' });
+            if (!value.postcode && (!value.distance || !value.unit)) {
+                return ngDialog.open({ template: 'mobile/partials/dialogs/message', data: 'Please provide valid location information' });
+            }
+            x.loading += 1;
+            x.contacts = [];
+            if (value.postcode) {
+                x.geoHeader = 'Contacts in ' + value.postcode.toUpperCase();
+                ApiService.getContactsIn(value.postcode).then(function (data) {
+                    x.loading = 0;  // If we're doing a geolocation search, we are overriding any other pending searches.
+                    x.contacts = data;
+                });
             } else {
-                x.loading += 1;
-                x.contacts = [];
-                if (value.postcode) {
-                    x.geoHeader = 'Contacts in ' + value.postcode.toUpperCase();
-                    ApiService.getContactsIn(value.postcode).then(function (data) {
+                if ('geolocation' in navigator) {
+                    navigator.geolocation.getCurrentPosition(success, error, { maximumAge: 600000 });
+                } else {
+                    return error();
+                }
+                x.geoHeader = 'Contacts within ' + value.distance + ' ' + value.unit;
+                function success(location) {
+                    ApiService.getContactsNearby(location.coords, value.distance, value.unit).then(function (data) {
                         x.loading = 0;  // If we're doing a geolocation search, we are overriding any other pending searches.
                         x.contacts = data;
                     });
-                } else {
-                    if ('geolocation' in navigator) {
-                        navigator.geolocation.getCurrentPosition(success, error, { maximumAge: 600000 });
-                    } else {
-                        return error();
-                    }
-                    x.geoHeader = 'Contacts within ' + value.distance + ' ' + value.unit;
-                    function success(location) {
-                        ApiService.getContactsNearby(location.coords, value.distance, value.unit).then(function (data) {
-                            x.loading = 0;  // If we're doing a geolocation search, we are overriding any other pending searches.
-                            x.contacts = data;
-                        });
-                    }
-                    function error() {
-                        ngDialog.open({ template: 'mobile/partials/dialogs/message', data: 'Geolocation data not available' });
-                        x.geoHeader = '';
-                        x.loading -= 1;
-                        x.search();
-                    }
+                }
+                function error() {
+                    ngDialog.open({ template: 'mobile/partials/dialogs/message', data: 'Geolocation data not available' });
+                    x.geoHeader = '';
+                    x.loading -= 1;
+                    x.search();
                 }
             }
         });

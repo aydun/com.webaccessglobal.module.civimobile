@@ -336,6 +336,7 @@ angular.module('civimobile').service('ApiService', ['$http', '$q', function ($ht
                 participant_status_id: { 1: 1, 2: 2, 5: 5 },
                 return: ['display_name','participant_status','participant_status_id'],
                 sort: 'sort_name',
+                options: { limit: 0 },
                 sequential: 1
             })
         };
