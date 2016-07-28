@@ -18,7 +18,7 @@ angular.module('civimobile', ['ui.router', 'ngDialog', 'ct.ui.router.extras.core
                 controller: 'ContactsController',
                 controllerAs: 'contacts',
                 data: {
-                    title: 'Contacts'
+                    title: 'Manage contacts'
                 }
             })
             .state('contacts.list', {
@@ -59,7 +59,7 @@ angular.module('civimobile', ['ui.router', 'ngDialog', 'ct.ui.router.extras.core
                 controller: 'EventsController',
                 controllerAs: 'events',
                 data: {
-                    title: 'Events'
+                    title: 'Manage events'
                 }
             })
             .state('events.list', {
@@ -89,21 +89,23 @@ angular.module('civimobile', ['ui.router', 'ngDialog', 'ct.ui.router.extras.core
                 url: '/memberships',
                 templateUrl: 'mobile/partials/memberships',
                 data: {
-                    title: 'Memberships'
+                    title: 'Manage memberships'
                 }
             })
             .state('donations', {
                 url: '/donations',
                 templateUrl: 'mobile/partials/donations',
+                controller: 'ContactsController',
+                controllerAs: 'contacts',
                 data: {
-                    title: 'Donations'
+                    title: 'Collect donations'
                 }
             })
             .state('surveys', {
                 url: '/surveys',
                 templateUrl: 'mobile/partials/surveys',
                 data: {
-                    title: 'Surveys'
+                    title: 'Manage surveys'
                 }
             });
     }])
