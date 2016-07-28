@@ -1,8 +1,6 @@
 'use strict';
-angular.module('civimobile').service('ApiService', ['$http', '$q', function ($http, $q) {
+angular.module('civimobile').service('ApiService', ['$http', '$q', '$cacheFactory', function ($http, $q, $cacheFactory) {
     var URL = 'ajax/rest';
-
-    // FIXME need to sort out api errors.
 
     // var indProfileId = <?php echo civimobile::getProfileId('Individual'); ?>;
     // var orgProfileId = <?php echo civimobile::getProfileId('Organization'); ?>;
@@ -12,113 +10,102 @@ angular.module('civimobile').service('ApiService', ['$http', '$q', function ($ht
     var indProfileId = defaultProfileIds.Individual;
     var orgProfileId = defaultProfileIds.Organization;
     var houseProfileId = defaultProfileIds.Household;
-    var indProfile, orgProfile, houseProfile;
+
+    var cache = $cacheFactory('ApiService');
+
+    function request(entity, action, json, isPost, then, shouldCache) {
+        json.version = 3;
+        json.sequential = 1;
+        then = then || angular.identity;
+        var params = {
+            entity: entity,
+            action: action,
+            json: JSON.stringify(json)
+        };
+        var key;
+        if (shouldCache) {
+            key = entity + '/' + action + '/' + JSON.stringify(json);
+            var x = cache.get(key);
+            if (x) {
+                return $q.when(x); // Wrap the result in a resolved promise for consistency with when it's a http call.
+            }
+        }
+
+        function success(data) {
+            var result = data.data.values || data.data.result;
+            result = then(result);
+            if (key) {
+                cache.put(key, result);
+            }
+            return result;
+        }
+        function failure() {
+            // FIXME
+            console.log('An error occured.')
+        }
+
+        if (!isPost) {
+            return $http.get(URL, { params: params }).then(success, failure);
+        } else {
+            return $http.post(URL, null, {
+                params: params,
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+            }).then(success, failure);
+        }
+    }
 
     this.getProfile = function (p) {
         var profile;
         switch (p) {
             case 'Individual':
-                return getIndProf();
+                return getProfile(indProfileId);
             case 'Organization':
-                return getOrgProf();
+                return getProfile(orgProfileId);
             case 'Household':
-                return getHouseProf();
+                return getProfile(houseProfileId);
             default:
                 return new Error('Something went wrong.');
         }
     }
 
-    function getIndProf() {
-        if (!indProfile) {
-            indProfile = getProfile(indProfileId);
-        }
-        return indProfile;
-    }
-    function getOrgProf() {
-        if (!orgProfile) {
-            orgProfile = getProfile(orgProfileId);
-        }
-        return orgProfile;
-    }
-    function getHouseProf() {
-        if (!houseProfile) {
-            houseProfile = getProfile(houseProfileId);
-        }
-        return houseProfile;
-    }
-
     function getProfile(id) {
         var params = {
-            entity: 'UFField',
-            action: 'get',
-            json: JSON.stringify({
-                version: 3,
-                uf_group_id: id,
-                'api.Contact.getfield': { name: '$value.field_name', action: 'get' },
-                'api.Contact.getoptions': { field: '$value.field_name' },
-                // return: ['label','field_name','is_view','is_required', 'field_type'],
-                sequential: 1,
-                options: { sort: 'weight' }
-            })
+            uf_group_id: id,
+            'api.Contact.getfield': { name: '$value.field_name', action: 'get' },
+            'api.Contact.getoptions': { field: '$value.field_name' },
+            // return: ['label','field_name','is_view','is_required', 'field_type'],
+            options: { sort: 'weight' }
         };
-        return $http.get(URL, { params: params })
-        .then(function success(data) {
-            return data.data.values;
-        }, function error(data, status, headers) {
-            return new Error('Something went wrong.');
-        })
-        .then(function (data) {
+        function then(values) {
             var profile = [];
-            for (var i = 0; i < data.length; i++) {
+            for (var i = 0; i < values.length; i++) {
                 // We only want active fields of some subtype of contact.
-                if (data[i].is_active === '1' && ['Individual', 'Organization', 'Household', 'Contact'].indexOf(data[i].field_type) > -1) {
+                if (values[i].is_active === '1' && ['Individual', 'Organization', 'Household', 'Contact'].indexOf(values[i].field_type) > -1) {
                     var field = {};
-                    field.html = data[i]['api.Contact.getfield'].values.html;
-                    field.field_name = data[i].field_name;
-                    field.label = data[i].label;
-                    if (data[i].is_required) {
+                    field.html = values[i]['api.Contact.getfield'].values.html;
+                    field.field_name = values[i].field_name;
+                    field.label = values[i].label;
+                    if (values[i].is_required) {
                         field.required = true;
                     }
                     // If there are options for a field, include them.
-                    if (!data[i]['api.Contact.getoptions'].is_error) {
-                        field.options = data[i]['api.Contact.getoptions'].values;
+                    if (!values[i]['api.Contact.getoptions'].is_error) {
+                        field.options = values[i]['api.Contact.getoptions'].values;
                     }
                     profile.push(field);
                 }
             }
             return profile;
-        });
+        }
+        return request('UFField', 'get', params, false, then, true);
     }
-
-    this.contactSearch = function (q, searchField, offset) {
-        searchField = searchField || 'sort_name';
-        var json = {
-                version: 3,
-                return: ['display_name','phone','email','contact_type'],
-                sort: 'sort_name',
-                options: { limit: 30, offset: (offset*30 || 0) },
-                sequential: 1
-            }
-        json[searchField] = q;
-        var params = {
-            entity: 'Contact',
-            action: 'get',
-            json: JSON.stringify(json)
-        };
-        return $http.get(URL, { params: params })
-        .then(function success(data) {
-            return processContacts(data.data.values);
-        }, function error(data, status, headers) {
-            return new Error('Something went wrong.');
-        });
-    };
 
     function processContacts(contacts) {
         for (var i = 0; i < contacts.length; i++) {
             var c = contacts[i];
             if (c.phone != '') {
                 c.icon = 'phone';
-                c.url = 'tel:' + c.phone.replace(/\s+/g, ''); // Phone number urls require no spaces
+                c.url = 'tel:' + c.phone.replace(/\s+/g, ''); // Phone number urls require no spaces.
             } else if (c.email != '') {
                 c.icon = 'email';
                 c.url = 'mailto:' + c.email;
@@ -129,229 +116,101 @@ angular.module('civimobile').service('ApiService', ['$http', '$q', function ($ht
         return contacts;
     }
 
+    this.contactSearch = function (q, searchField, offset) {
+        searchField = searchField || 'sort_name';
+        var params = {
+            return: ['display_name','phone','email','contact_type'],
+            sort: 'sort_name',
+            options: { limit: 30, offset: (offset*30 || 0) }
+        }
+        params[searchField] = q;
+        return request('Contact', 'get', params).then(processContacts);
+    }
+
     this.getContactsIn = function (postcode) {
         var params = {
-            entity: 'Address',
-            action: 'get',
-            json: JSON.stringify({
-                version: 3,
-                postal_code: {'LIKE': postcode + '%'}, // Match partially completed postcodes.
-                'api.contact.getsingle': { contact_id: '$value.contact_id' },
-                sequential: 1
-            })
+            postal_code: {'LIKE': postcode + '%'}, // Match partially completed postcodes.
+            'api.contact.getsingle': { contact_id: '$value.contact_id' }
         };
-        return $http.get(URL, { params: params })
-        .then(function success(data) {
+        return request('Address', 'get', params).then(function (values) {
             var cs = [];
-            for (var i = 0; i < data.data.values.length; i ++) {
-                cs.push(data.data.values[i]['api.contact.getsingle']);
+            for (var i = 0; i < values.length; i ++) {
+                cs.push(values[i]['api.contact.getsingle']);
             }
             return cs;
-        }, function error(data, status, headers) {
-            return new Error('Something went wrong.');
         }).then(processContacts);
     }
 
     this.getContactsNearby = function (coords, distance, units) {
         var params = {
-            entity: 'Contact',
-            action: 'proximity',
-            json: JSON.stringify({
-                version: 3,
-                latitude: coords.latitude,
-                longitude: coords.longitude,
-                distance: distance,
-                units: units,
-                'api.contact.getsingle': { id: '$value.contact_id', return: ['display_name', 'email', 'phone'] },
-                sequential: 1
-            })
+            latitude: coords.latitude,
+            longitude: coords.longitude,
+            distance: distance,
+            units: units,
+            'api.contact.getsingle': { id: '$value.contact_id', return: ['display_name', 'email', 'phone'] }
         };
-        return $http.post(URL, null, { params: params, headers: {'Content-Type': 'application/x-www-form-urlencoded'} })
-        .then(function success(data) {
-            var cs = []
-            for (var i = 0; i < data.data.values.length; i++) {
-                var c = data.data.values[i];
+        return request('Contact', 'proximity', params, true).then(function (values) {
+            var cs = [];
+            for (var i = 0; i < values.length; i++) {
+                var c = values[i];
                 cs.push(c['api.contact.getsingle']);
             }
             return cs;
-        }, function error(data, status, headers) {
-            return new Error('Something went wrong.');
         }).then(processContacts);
     }
 
-    this.getContactType = function (id) {
-        var params = {
-            entity: 'Contact',
-            action: 'getvalue',
-            json: JSON.stringify({
-                version: 3,
-                id: id,
-                return: 'contact_type'
-            })
-        };
-        return $http.get(URL, { params: params })
-        .then(function success(data) {
-            return data.data.result;
-        }, function error(data, status, headers) {
-            return new Error('Something went wrong.');
-        });
-    }
-
     this.getContact = function (id) {
-        var params = {
-            entity: 'Contact',
-            action: 'get',
-            json: JSON.stringify({
-                version: 3,
-                id: id
-            })
-        };
-        return $http.get(URL, { params: params })
-        .then(function success(data) {
-            return data.data.values[id];
-        }, function error(data, status, headers) {
-            return new Error('Something went wrong.');
+        return request('Contact', 'get', { id: id }).then(function (values) {
+            return values[0];
         });
     }
 
     this.saveContact = function (fields) {
-        fields.version = 3;
-        fields.sequential = 1;
-        var params = {
-            entity: 'Contact',
-            action: 'create',
-            json: JSON.stringify(fields)
-        };
-        return $http.post(URL, null, { params: params, headers: {'Content-Type': 'application/x-www-form-urlencoded'} })
-        .then(function success(data) {
-            return data.data.values[0].id;
-        }, function error(data, status, headers) {
-            return new Error('Something went wrong.');
+        return request('Contact', 'create', fields, true).then(function (values) {
+            return values[0].id;
         });
     }
 
     this.getContributionFields = function () {
         var params = {
-            entity: 'Contribution',
-            action: 'getfields',
-            json: JSON.stringify({
-                version: 3,
-                api_action: 'create',
-                return: ['name', 'title', 'html', 'required'],
-                sequential: 1
-            })
+            api_action: 'create',
+            return: ['name', 'title', 'html', 'required']
         };
-        return $http.get(URL, { params: params })
-        .then(function success(data) {
-            return data.data.values;
-        }, function error(data, status, headers) {
-            return new Error('Something went wrong.');
-        });
+        return request('Contribution', 'getfields', params, false, null, true);
     }
 
     this.getContributionFieldOptions = function (field) {
-        var params = {
-            entity: 'Contribution',
-            action: 'getoptions',
-            json: JSON.stringify({
-                version: 3,
-                field: field
-            })
-        };
-        return $http.get(URL, { params: params })
-        .then(function success(data) {
-            return data.data.values;
-        }, function error(data, status, headers) {
-            return new Error('Something went wrong.');
-        });
+        return request('Contribution', 'getoptions', { field: field }, false, null, true);
     }
 
     this.saveContribution = function (fields) {
         // If 'default' currency remove the property; the API will handle this as default.
         if (fields.currency == '000') { fields.currency = ''; }
-        fields.version = 3;
-        fields.sequential = 1;
-        var params = {
-            entity: 'Contribution',
-            action: 'create',
-            json: JSON.stringify(fields)
-        };
-        return $http.post(URL, null, { params: params, headers: {'Content-Type': 'application/x-www-form-urlencoded'} })
-        .then(function success(data) {
-            return data.data.values[0];
-        }, function error(data, status, headers) {
-            return new Error('Something went wrong.');
+        return request('Contribution', 'create', fields, true).then(function (values) {
+            return values[0];
         });
     }
 
     this.eventSearch = function (q) {
         var params = {
-            entity: 'Event',
-            action: 'get',
-            json: JSON.stringify({
-                version: 3,
-                title: {'LIKE': '%' + q + '%'},
-                return: ['event_title','id'],
-                sequential: 1
-            })
+            title: {'LIKE': '%' + q + '%'},
+            return: ['event_title','id']
         };
-        return $http.get(URL, { params: params })
-        .then(function success(data) {
-            return data.data.values;
-        }, function error(data, status, headers) {
-            return new Error('Something went wrong.');
-        });
-    };
+        return request('Event', 'get', params);
+    }
 
     this.getEvent = function (id) {
         var params = {
-            entity: 'Event',
-            action: 'get',
-            json: JSON.stringify({
-                version: 3,
-                id: id,
-                'api.LocBlock.getsingle': {
-                    id: '$value.loc_block_id',
-                    'api.address.getsingle': {
-                        id: '$value.address_id'
-                    }
+            id: id,
+            'api.LocBlock.getsingle': {
+                id: '$value.loc_block_id',
+                'api.address.getsingle': {
+                    id: '$value.address_id'
                 }
-            })
-        };
-        return $http.get(URL, { params: params })
-        .then(function success(data) {
-            return data.data.values[id];
-        }, function error(data, status, headers) {
-            return new Error('Something went wrong.');
-        });
-    }
-
-    this.getEventParticipants = function (id) {
-        var params = {
-            entity: 'Participant',
-            action: 'get',
-            json: JSON.stringify({
-                version: 3,
-                event_id: id,            // 1 = registered, 2 = attended, 5 = pending (pay later)
-                participant_status_id: { 1: 1, 2: 2, 5: 5 },
-                return: ['display_name','participant_status','participant_status_id'],
-                sort: 'sort_name',
-                options: { limit: 0 },
-                sequential: 1
-            })
-        };
-        return $http.get(URL, { params: params })
-        .then(function success(data) {
-            return data.data.values;
-        }, function error(data, status, headers) {
-            return new Error('Something went wrong.');
-        })
-        .then(function (ps) {
-            for (var i = 0; i < ps.length; i++) {
-                var p = ps[i];
-                processParticipant(p);
             }
-            return ps;
+        };
+        return request('Event', 'get', params).then(function (values) {
+            return values[0];
         });
     }
 
@@ -373,6 +232,23 @@ angular.module('civimobile').service('ApiService', ['$http', '$q', function ($ht
         }
     }
 
+    this.getEventParticipants = function (id) {
+        var params = {
+            event_id: id,
+            participant_status_id: { 1: 1, 2: 2, 5: 5 }, // 1 = registered, 2 = attended, 5 = pending (pay later).
+            return: ['display_name','participant_status','participant_status_id'],
+            sort: 'sort_name',
+            options: { limit: 0 }
+        };
+        return request('Participant', 'get', params).then(function (ps) {
+            for (var i = 0; i < ps.length; i++) {
+                var p = ps[i];
+                processParticipant(p);
+            }
+            return ps;
+        });
+    }
+
     this.updateParticipant = function (id, checkedIn, payLater) {
         var status;
         if (checkedIn) {
@@ -383,91 +259,46 @@ angular.module('civimobile').service('ApiService', ['$http', '$q', function ($ht
             status = 1;
         }
         var params = {
-            entity: 'Participant',
-            action: 'update',
-            json: JSON.stringify({
-                version: 3,
-                participant_id: id,
-                participant_status_id: status
-            })
+            participant_id: id,
+            participant_status_id: status
         };
-        return $http.post(URL, null, { params: params, headers: {'Content-Type': 'application/x-www-form-urlencoded'} })
-        .then(function success(data) {
-            // FIXME What to do?
-        }, function error(data, status, headers) {
-            return new Error('Something went wrong.');
-        });
+        return request('Participant', 'update', params, true);
+        // FIXME what to do now?
     }
 
     this.addParticipant = function (eventId, contactId, payLater) {
         var status = 1;
         if (payLater) { status = 5; }
         var params = {
-            entity: 'Participant',
-            action: 'create',
-            json: JSON.stringify({
-                version: 3,
-                event_id: eventId,
-                contact_id: contactId,
-                status_id: status,
-                sequential: 1
-            })
+            event_id: eventId,
+            contact_id: contactId,
+            status_id: status
         };
-        return $http.post(URL, null, { params: params, headers: {'Content-Type': 'application/x-www-form-urlencoded'} })
-        .then(function success(data) {
-            // FIXME What to do?
-            var p = data.data.values[0];
-            processParticipant(p);
-            return p;
-        }, function error(data, status, headers) {
-            return new Error('Something went wrong.');
+        return request('Participant', 'create', params, true).then(function (values) {
+            processParticipant(values[0]);
+            return values[0];
         });
     }
 
     this.getEventFields = function () {
-        var params = {
-            entity: 'Event',
-            action: 'getfields',
-            json: JSON.stringify({
-                version: 3,
-                api_action: 'get',
-                sequential: 1
-            })
-        };
-        return $http.get(URL, { params: params })
-        .then(function success(data) {
-            return data.data.values;
-        }, function error(data, status, headers) {
-            return new Error('Something went wrong.');
-        })
-        .then(function (data) {
+        function then(values) {
             var fields = [];
-            for (var i = 0; i < data.length; i++) {
+            for (var i = 0; i < values.length; i++) {
                 var field = {
-                    field_name: data[i].name,
-                    label: data[i].title,
-                    html: data[i].html
+                    field_name: values[i].name,
+                    label: values[i].title,
+                    html: values[i].html
                 };
                 fields.push(field);
             }
             return fields;
-        });
+        }
+        return request('Event', 'getfields', { api_action: 'get' }, false, then, true);
     }
 
     this.saveEvent = function (fields) {
-        fields.version = 3;
-        fields.sequential = 1;
-        var params = {
-            entity: 'Event',
-            action: 'update',
-            json: JSON.stringify(fields)
-        };
-        return $http.post(URL, null, { params: params, headers: {'Content-Type': 'application/x-www-form-urlencoded'} })
-        .then(function success(data) {
-            return;
-        }, function error(data, status, headers) {
-            return new Error('Something went wrong.');
-        });
+        return request('Event', 'update', fields, true);
+        // FIXME what to do now?
     }
 
 }]);

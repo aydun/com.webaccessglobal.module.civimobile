@@ -39,7 +39,7 @@ angular.module('civimobile').controller('ContributionController', ['$state', '$s
     function getOptions(j) {
         ApiService.getContributionFieldOptions(x.fields[j].name).then(function (os) {
             if (x.fields[j].name == 'currency') {
-                os = angular.extend({ '000': 'Default' }, os); // Add a label for 'default' currency.
+                os.unshift({ key: '000', value: 'Default' });
             }
             x.fields[j].options = os;
         });
