@@ -2,6 +2,7 @@
     <li class='left icon' ui-sref='^.^.list'><i class='icon-back'></i></li>
     <li class='middle-item'><h3>{{ contact.contact.display_name }}</h3></li>
     <li class='right icon' ui-sref='^.edit'><i class='icon-edit'></i></li>
+    <li class='right icon' ui-sref='^.contribution({type:1,source:"CiviMobile: donation"})'><i class='icon-dollar'></i></li>
 </ul>
 <div class='content'>
     <div ng-repeat='f in contact.fields'>

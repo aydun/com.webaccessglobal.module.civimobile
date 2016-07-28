@@ -12,7 +12,7 @@
             <input class='holo' type='search' name='contacts_search' placeholder='Find existing contact' ng-model='contacts.query' ng-change='contacts.search()' ng-model-options='{updateOn:"default blur",debounce:{"default":150,"blur":0}}'/>
         </div>
     </li>
-    <li class='right icon' ng-dialog='mobile/partials/dialogs/new_donation_contact'><i class='icon-new-user'></i></li>
+    <li class='right icon' ng-dialog='mobile/partials/dialogs/new_contact'><i class='icon-new-user'></i></li>
 </ul>
 <div class='content'>
     <div vs-repeat vs-excess='4' vs-scrolled-to-end='contacts.loadMore()' vs-scrolled-to-end-offset=5 ng-hide='contacts.loading > 0'>
