@@ -27,16 +27,6 @@ angular.module('civimobile').controller('ContactController', ['$state', '$stateP
                 x.fields = p;
             });
     }
-    // this.fields = this.contact.then(function (c) { return ApiService.getProfile(c.contact_type) });
-
-    // this.contact.then(function (data) {
-    //         x.contact = data;
-    //         return data.contact_type;
-    //     })
-    //     .then(ApiService.getProfile)
-    //     .then(function (data) {
-    //         x.fields = data;
-    //     });
 
     this.save = function () {
         var fs = {};
