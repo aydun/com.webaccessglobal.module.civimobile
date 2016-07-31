@@ -17,6 +17,16 @@ angular.module('civimobile').controller('ContactController', ['$state', '$stateP
             })
             .then(ApiService.getProfile)
             .then(function (p) {
+                for (var i = 0; i < p.length; i++) {
+                    var f = p[i];
+                    if (f.options) {
+                        for (var j = 0; j < f.options.length; j++) {
+                            if (f.options[j].key == x.contact[f.field_name]) {
+                                x.contact[f.field_name] = f.options[j].value;
+                            }
+                        }
+                    }
+                }
                 x.fields = p;
             });
     } else {
