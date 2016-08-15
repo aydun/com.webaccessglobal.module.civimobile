@@ -323,5 +323,12 @@ form.pure-form > input[type='text'] {
 }
 .label {
     font-style: italic;
-    color: #999;
+    color: #777;
 }
+.pure-form div.value {
+    display: inline-block;
+    vertical-align: top;
+    width: 100%;
+    max-width: 220px;
+}
+

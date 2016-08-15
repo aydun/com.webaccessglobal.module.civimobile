@@ -5,23 +5,40 @@
     <li class='right icon' ui-sref='^.contribution({type:1,source:"CiviMobile: donation"})'><i class='icon-dollar'></i></li>
 </ul>
 <div class='content'>
-    <center>
-        <div ng-repeat='f in contact.fields' ng-switch='f.field_name'>
-            <div ng-switch-when='email' ng-switch-when='phone' ng-repeat='x in contact.contact[f.field_name]'>
-                <p><span class='label'>{{ f.label }}{{ x.is_primary == '1' ? ' (primary)' : '' }}{{ x.is_billing == '1' ? ' (billing)' : '' }}{{ x.is_bulkmail == '1' ? ' (bulk mail)' : '' }}</span> {{ x[f.field_name] }}</p>
-            </div>
-            <div ng-switch-default>
-                <p><span class='label'>{{ f.label }}</span> {{ contact.contact[f.field_name].value ? contact.contact[f.field_name].value : contact.contact[f.field_name] }}</p>
-            </div>
+    <form class='pure-form pure-form-aligned'>
+        <div class='pure-control-group' ng-repeat='f in contact.fields' ng-show='contact.contact[f.field_name]'>
+            <label>{{ f.label }}</label>
+            <div class='value'>{{ contact.contact[f.field_name].value ? contact.contact[f.field_name].value : contact.contact[f.field_name] }}</div>
         </div>
-        <form ng-if='contact.hasEmail' class='pure-form'><legend>Email</legend>
+        <div ng-if='contact.hasEmail && contact.emails.length > 0'>
+            <legend>Email</legend>
             <div ng-repeat='e in contact.emails'>
-                <span class='label'>{{ e.is_primary == '1' ? '(primary) ' : '' }}{{ e.is_billing == '1' ? '(billing) ' : '' }}{{ e.is_bulkmail == '1' ? '(bulk mail) ' : '' }}</span><a class='pure-button pure-button-secondary' href='mailto:{{e.email}}'>{{ e.email }}</a>
+                <center>
+                    <a class='pure-button pure-button-secondary' href='mailto:{{e.email}}'>
+                        {{ e.email }}
+                        <span class='label'>
+                            {{ e.is_primary == '1' ? ' (primary)' : '' }}
+                            {{ e.is_billing == '1' ? ' (billing)' : '' }}
+                            {{ e.is_bulkmail == '1' ? ' (bulk mail)' : '' }}
+                        </span>
+                    </a>
+                </center>
             </div>
-        </form>
-        <form ng-if='contact.hasPhone' class='pure-form'><legend>Phone</legend></form>
-        <div ng-repeat='p in contact.phones'>
-            <span class='label'>{{ p.is_primary == '1' ? ' (primary) ' : '' }}{{ p.is_billing == '1' ? ' (billing) ' : '' }}</span><a class='pure-button pure-button-secondary' href='tel:{{p.phone.split(" ").join("")}}'>{{ p.phone }}</a>
         </div>
-    </center>
+        <div ng-if='contact.hasPhone && contact.phones.length > 0'>
+            <legend>Phone</legend>
+            <div ng-repeat='p in contact.phones'>
+                <center>
+                    <a class='pure-button pure-button-secondary' href='tel:{{p.phone.split(" ").join("")}}'>
+                        {{ p.phone }}
+                        <span class='label'>
+                            {{ p.is_primary == '1' ? ' (primary)' : '' }}
+                            {{ p.is_billing == '1' ? ' (billing)' : '' }}
+                            {{ p.is_bulkmail == '1' ? ' (bulk mail)' : '' }}
+                        </span>
+                    </a>
+                </center>
+            </div>
+        </div>
+    </form>
 </div>

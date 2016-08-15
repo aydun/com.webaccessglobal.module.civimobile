@@ -8,6 +8,7 @@
         <input ng-switch-when='CheckBox' type='checkbox' id='{{f.field_name}}' ng-model='contact.contact[f.field_name].key' ng-true-value='1', ng-false-value='0'>
     </div>
     <div ng-if='contact.hasEmail'>
+        <br>
         <legend>Email</legend>
         <div class='pure-control-group'>
             <label class='top'>Email addresses</label>
@@ -30,6 +31,7 @@
         </div>
     </div>
     <div ng-if='contact.hasPhone'>
+        <br>
         <legend>Phone</legend>
         <div class='pure-control-group'>
             <label class='top'>Phone numbers</label>
