@@ -5,12 +5,23 @@
     <li class='right icon' ui-sref='^.contribution({type:1,source:"CiviMobile: donation"})'><i class='icon-dollar'></i></li>
 </ul>
 <div class='content'>
-    <div ng-repeat='f in contact.fields' ng-switch='f.field_name'>
-        <div ng-switch-when='email' ng-switch-when='phone' ng-repeat='x in contact.contact[f.field_name]'>
-            <p>{{ f.label }}{{ x.is_primary == '1' ? ' (primary)' : '' }}: {{ x[f.field_name] }}</p>
+    <center>
+        <div ng-repeat='f in contact.fields' ng-switch='f.field_name'>
+            <div ng-switch-when='email' ng-switch-when='phone' ng-repeat='x in contact.contact[f.field_name]'>
+                <p><span class='label'>{{ f.label }}{{ x.is_primary == '1' ? ' (primary)' : '' }}{{ x.is_billing == '1' ? ' (billing)' : '' }}{{ x.is_bulkmail == '1' ? ' (bulk mail)' : '' }}</span> {{ x[f.field_name] }}</p>
+            </div>
+            <div ng-switch-default>
+                <p><span class='label'>{{ f.label }}</span> {{ contact.contact[f.field_name].value ? contact.contact[f.field_name].value : contact.contact[f.field_name] }}</p>
+            </div>
         </div>
-        <div ng-switch-default>
-            <p>{{ f.label }}: {{ contact.contact[f.field_name].value ? contact.contact[f.field_name].value : contact.contact[f.field_name] }}</p>
+        <form ng-if='contact.hasEmail' class='pure-form'><legend>Email</legend>
+            <div ng-repeat='e in contact.emails'>
+                <span class='label'>{{ e.is_primary == '1' ? '(primary) ' : '' }}{{ e.is_billing == '1' ? '(billing) ' : '' }}{{ e.is_bulkmail == '1' ? '(bulk mail) ' : '' }}</span><a class='pure-button pure-button-secondary' href='mailto:{{e.email}}'>{{ e.email }}</a>
+            </div>
+        </form>
+        <form ng-if='contact.hasPhone' class='pure-form'><legend>Phone</legend></form>
+        <div ng-repeat='p in contact.phones'>
+            <span class='label'>{{ p.is_primary == '1' ? ' (primary) ' : '' }}{{ p.is_billing == '1' ? ' (billing) ' : '' }}</span><a class='pure-button pure-button-secondary' href='tel:{{p.phone.split(" ").join("")}}'>{{ p.phone }}</a>
         </div>
-    </div>
+    </center>
 </div>

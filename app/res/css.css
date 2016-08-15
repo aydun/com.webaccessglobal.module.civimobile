@@ -321,3 +321,7 @@ form.pure-form > input[type='text'] {
     box-sizing: border-box;
     margin: 0 -1px;
 }
+.label {
+    font-style: italic;
+    color: #999;
+}
