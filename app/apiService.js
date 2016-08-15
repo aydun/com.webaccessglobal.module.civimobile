@@ -2,11 +2,6 @@
 angular.module('civimobile').service('ApiService', ['$http', '$q', '$cacheFactory', function ($http, $q, $cacheFactory) {
     var URL = 'ajax/rest';
 
-    // var indProfileId = <?php echo civimobile::getProfileId('Individual'); ?>;
-    // var orgProfileId = <?php echo civimobile::getProfileId('Organization'); ?>;
-    // var houseProfileId = <?php echo civimobile::getProfileId('Household'); ?>;
-
-    // FIXME
     var indProfileId = defaultProfileIds.Individual;
     var orgProfileId = defaultProfileIds.Organization;
     var houseProfileId = defaultProfileIds.Household;
