@@ -179,12 +179,19 @@ input.holo[type='search']:hover, input.holo[type='search']:focus {
     width: 100%;
     margin-right: 10px;
     color: #999;
+    vertical-align: middle;
 }
 .pure-form-aligned input,
 .pure-form-aligned select,
-.pure-form-aligned textarea {
+.pure-form-aligned textarea,
+.pure-form-aligned field-set {
+    display: inline-block;
     max-width: 220px;
     width: 100%;
+}
+.pure-form-aligned label.top {
+    vertical-align: top;
+    margin-top: 0.75em;
 }
 .pure-form-aligned textarea {
     height: 7.85em;

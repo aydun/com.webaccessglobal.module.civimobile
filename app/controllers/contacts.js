@@ -46,7 +46,7 @@ angular.module('civimobile').controller('ContactsController', ['$state', 'ApiSer
 
         if (!manual) {
             var emailRegex = /^\S+@\S+$/;
-            var phoneRegex = /[0-9]{5,15}/;
+            var phoneRegex = /[0-9]{4,15}/;
 
             if (emailRegex.test(this.query)) {
                 this.changeField('email');

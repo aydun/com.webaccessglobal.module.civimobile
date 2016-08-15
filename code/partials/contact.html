@@ -5,7 +5,12 @@
     <li class='right icon' ui-sref='^.contribution({type:1,source:"CiviMobile: donation"})'><i class='icon-dollar'></i></li>
 </ul>
 <div class='content'>
-    <div ng-repeat='f in contact.fields'>
-        <p>{{ f.label }}: {{ contact.contact[f.field_name] }}</p>
+    <div ng-repeat='f in contact.fields' ng-switch='f.field_name'>
+        <div ng-switch-when='email' ng-switch-when='phone' ng-repeat='x in contact.contact[f.field_name]'>
+            <p>{{ f.label }}{{ x.is_primary == '1' ? ' (primary)' : '' }}: {{ x[f.field_name] }}</p>
+        </div>
+        <div ng-switch-default>
+            <p>{{ f.label }}: {{ contact.contact[f.field_name].value ? contact.contact[f.field_name].value : contact.contact[f.field_name] }}</p>
+        </div>
     </div>
 </div>

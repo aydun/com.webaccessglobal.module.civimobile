@@ -27,15 +27,16 @@ angular.module('civimobile').service('ApiService', ['$http', '$q', '$cacheFactor
             key = entity + '/' + action + '/' + JSON.stringify(json);
             var x = cache.get(key);
             if (x) {
-                return $q.when(x); // Wrap the result in a resolved promise for consistency with when it's a http call.
+                return $q.when(angular.copy(x)); // Wrap the result in a resolved promise for consistency
+                                                 // with when it's a http call.
             }
         }
 
         function success(data) {
-            var result = data.data.values || data.data.result;
+            var result = data.data.values || data.data.result || data.data;
             result = then(result);
             if (key) {
-                cache.put(key, result);
+                cache.put(key, angular.copy(result));
             }
             return result;
         }
@@ -73,7 +74,7 @@ angular.module('civimobile').service('ApiService', ['$http', '$q', '$cacheFactor
             uf_group_id: id,
             'api.Contact.getfield': { name: '$value.field_name', action: 'get' },
             'api.Contact.getoptions': { field: '$value.field_name' },
-            // return: ['label','field_name','is_view','is_required', 'field_type'],
+            return: ['is_active', 'label','field_name','is_view','is_required', 'field_type'],
             options: { sort: 'weight' }
         };
         function then(values) {
@@ -82,9 +83,13 @@ angular.module('civimobile').service('ApiService', ['$http', '$q', '$cacheFactor
                 // We only want active fields of some subtype of contact.
                 if (values[i].is_active === '1' && ['Individual', 'Organization', 'Household', 'Contact'].indexOf(values[i].field_type) > -1) {
                     var field = {};
-                    field.html = values[i]['api.Contact.getfield'].values.html;
+                    field.type = values[i]['api.Contact.getfield'].values.html ? values[i]['api.Contact.getfield'].values.html.type : '';
                     field.field_name = values[i].field_name;
+                    if (field.field_name == 'email' || field.field_name == 'phone') {
+                        field.type = field.field_name;
+                    }
                     field.label = values[i].label;
+                    field.title = values[i].title;
                     if (values[i].is_required) {
                         field.required = true;
                     }
@@ -160,14 +165,57 @@ angular.module('civimobile').service('ApiService', ['$http', '$q', '$cacheFactor
     }
 
     this.getContact = function (id) {
-        return request('Contact', 'get', { id: id }).then(function (values) {
-            return values[0];
+        var params = {
+            id: id,
+            'api.Phone.get': {},
+            'api.Email.get': {}
+        }
+        return request('Contact', 'getsingle', params).then(function (value) {
+            value.email = value['api.Email.get'].values;
+            value.phone = value['api.Phone.get'].values;
+            return value;
         });
     }
 
-    this.saveContact = function (fields) {
-        return request('Contact', 'create', fields, true).then(function (values) {
-            return values[0].id;
+    this.saveContact = function (fields, emails, phones) {
+        // Unfortunately multiple api requests are needed here (necessitated by Civi api).
+        // One for normal contact fields, and then one for each email or phone number edited.
+        // The returned promise is resolved when all requests return successfully.
+        var f = request('Contact', 'create', fields, true);
+        var e = []; var p = [];
+
+        var f; var e = []; var p= [];
+        f = request('Contact', 'create', fields, true);
+        if (emails) {
+            for (var i = 0; i < emails.length; i++) {
+                if (fields.contact_id || emails[i].contact_id) {
+                    emails[i].contact_id = emails[i].contact_id || fields.contact_id;
+                    e.push(request('Email', emails[i].email ? 'create' : 'delete', emails[i], true));
+                } else {
+                    e.push(f.then(function (values) {
+                        emails[i].contact_id = values[0].id;
+                        return request('Email', 'create', emails[i], true);
+                    }));
+                }
+            }
+        }
+        if (phones) {
+            for (var i = 0; i < phones.length; i++) {
+                if (fields.contact_id || phones[i].contact_id) {
+                    phones[i].contact_id = phones[i].contact_id || fields.contact_id;
+                    p.push(request('Phone', phones[i].phone ? 'create' : 'delete', phones[i], true));
+                } else {
+                    p.push(f.then(function (values) {
+                        phones[i].contact_id = values[0].id;
+                        return request('Phone', 'create', phones[i], true);
+                    }));
+                }
+            }
+        }
+        var x = e.concat(p)
+        x.unshift(f);
+        return $q.all(x).then(function (vss) {
+            return vss[0][0].id;
         });
     }
 
