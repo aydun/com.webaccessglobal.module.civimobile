@@ -230,7 +230,6 @@ legend {
     border-bottom: 1px solid #DDD;
     text-align: center;
     background-color: #FFF;
-    z-index: 5;
 }
 .tabs > .tab {
     display: inline-block;

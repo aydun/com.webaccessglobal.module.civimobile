@@ -285,11 +285,18 @@ angular.module('civimobile').service('ApiService', ['$http', '$q', '$cacheFactor
             participant_status_id: { 1: 1, 2: 2, 5: 5 }, // 1 = registered, 2 = attended, 5 = pending (pay later).
             return: ['display_name','participant_status','participant_status_id'],
             sort: 'sort_name',
-            options: { limit: 0 }
+            options: { limit: 0 },
+            'api.ParticipantPayment.get': {
+                'api.Contribution.get': { return: ['total_amount', 'currency', 'contribution_status_id'] }
+            }
         };
         return request('Participant', 'get', params).then(function (ps) {
             for (var i = 0; i < ps.length; i++) {
                 var p = ps[i];
+                p.payment = p['api.ParticipantPayment.get'].values[0];
+                if (p.payment) {
+                    p.contribution = p.payment['api.Contribution.get'].values[0];
+                }
                 processParticipant(p);
             }
             return ps;

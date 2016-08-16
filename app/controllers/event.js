@@ -19,12 +19,7 @@ angular.module('civimobile').controller('EventController', ['$state', '$statePar
     ApiService.getEvent(this.id).then(function (event) {
         event.start_date = new Date(event.start_date);
         event.end_date = new Date(event.end_date);
-        event.startDateDate = $filter('date')(event.start_date, 'yyyy-MM-dd');
-        console.log(event.startDateDate);
-        event.startDateTime = event.start_date.getTime();
-        console.log(event.startDateTime);
         x.event = event;
-        console.log(x.event);
         var address = event['api.LocBlock.getsingle']['api.address.getsingle'];
         if (address) {
             x.address = address;
@@ -82,11 +77,14 @@ angular.module('civimobile').controller('EventController', ['$state', '$statePar
             ngDialog.open({ template: 'mobile/partials/dialogs/check_in_participant', data: p })
             .closePromise.then(function (data) {
                 var code = data.value;
-                if (code != 1 && code != 2) { // No action taken, so revert 'check in'.
+                if (code != 1 && code != 2 && code != 3) { // No action taken, so revert 'check in'.
                     return p.checkedIn = false;
                 }
-                if (code == 2) {                                                  // 'event fee' type
+                if (code == 2) {                                                  // 4 = 'event fee' type
                     $state.go('contacts.detail.contribution', { id: p.contact_id, type: 4, currency: x.event.currency, source: x.event.event_title + ' : check in at event' });
+                }
+                if (code == 3) {
+                    ApiService.saveContribution({ id: p.contribution.contribution_id, contribution_status_id: 1 }); // 1 = 'complete'
                 }
                 ApiService.updateParticipant(p.id, p.checkedIn, p.payLater);
             });
