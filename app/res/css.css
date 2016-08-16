@@ -219,6 +219,7 @@ legend {
     }
 }
 .pure-form input[type]:focus,
+.pure-form textarea:focus,
 .pure-form select:focus {
     border-color: #81C459;
 }

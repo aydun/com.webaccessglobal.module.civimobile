@@ -56,6 +56,7 @@ $includePath = $config->extensionsURL . DIRECTORY_SEPARATOR . 'com.webaccessglob
       'Organization': <?php echo civimobile::getProfileId('Organization'); ?>,
       'Household': <?php echo civimobile::getProfileId('Household'); ?>,
     };
+    var userId = <?php print $civimobile_vars['loggedInContactID'];?>
   </script>
 </head>
 <body ng-app='civimobile'>

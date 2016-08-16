@@ -1,23 +1,47 @@
 'use strict';
-angular.module('civimobile').controller('EventController', ['$state', '$stateParams', 'ApiService', 'ngDialog', '$previousState', function ($state, $stateParams, ApiService, ngDialog, $previousState) {
+angular.module('civimobile').controller('EventController', ['$state', '$stateParams', 'ApiService', 'ngDialog', '$filter', function ($state, $stateParams, ApiService, ngDialog, $filter) {
     this.id = $stateParams.id
     this.event = {};
     this.address = {};
+    this.stateOptions = [];
+    this.countryOptions = [];
     this.fields = [];
-    var fieldsToDisplay = ['title', 'start_date', 'end_date', 'summary'];
+    var fieldsToDisplay = ['title', 'start_date', 'end_date', 'summary', 'description'];
     this.participants;
     this.displayRegistered = true;
     this.displayCheckedIn = true;
     this.loadingParticipants = true;
+    var addressModified; // So we can see if it's been updated.
 
     // So we can refer to 'this' within promises.
     var x = this;
 
     ApiService.getEvent(this.id).then(function (event) {
+        event.start_date = new Date(event.start_date);
+        event.end_date = new Date(event.end_date);
+        event.startDateDate = $filter('date')(event.start_date, 'yyyy-MM-dd');
+        console.log(event.startDateDate);
+        event.startDateTime = event.start_date.getTime();
+        console.log(event.startDateTime);
         x.event = event;
+        console.log(x.event);
         var address = event['api.LocBlock.getsingle']['api.address.getsingle'];
         if (address) {
             x.address = address;
+        }
+        x.stateOptions = event['api.address.getoptions'].values;
+        x.countryOptions = event['api.Address.getoptions'].values; // See comment in ApiService
+        if (address) {
+            for (var i = 0; i < x.stateOptions.length; i++) {
+                if (x.stateOptions[i].key == x.address.state_province_id) {
+                    x.address.state = x.stateOptions[i];
+                }
+            }
+            for (var i = 0; i < x.countryOptions.length; i++) {
+                if (x.countryOptions[i].key == x.address.country_id) {
+                    x.address.country = x.countryOptions[i];
+                }
+            }
         }
     });
     ApiService.getEventFields().then(function (fields) {
@@ -103,16 +127,26 @@ angular.module('civimobile').controller('EventController', ['$state', '$statePar
         });
     }
 
+    this.changeAddress = function () {
+        // Called by ng-change on edit page.
+        addressModified = true;
+    }
+
     this.save = function () {
-        // FIXME also save address
         var fs = {};
         for (var i = 0; i < this.fields.length; i++) {
             var f = this.fields[i];
             fs[f.field_name] = this.event[f.field_name];
         }
         fs.id = this.event.id;
-        ApiService.saveEvent(fs).then(function () {
-            $state.go('^.view');
+        fs.loc_block_id = this.event.loc_block_id;
+        this.address.state_province_id = this.address.state.key;
+        this.address.country_id = this.address.country.key;
+        delete this.address.state;    // Don't want to leak these two to the api request.
+        delete this.address.country;
+        delete this.address.id;       // Need to create a new address record as an address may be used by more than one entity.
+        ApiService.saveEvent(fs, addressModified ? this.address : null).then(function () {
+            $state.go('^.view', null, { reload: true });
         });
     }
 }]);

@@ -250,7 +250,11 @@ angular.module('civimobile').service('ApiService', ['$http', '$q', '$cacheFactor
                 'api.address.getsingle': {
                     id: '$value.address_id'
                 }
-            }
+            },
+            'api.address.getoptions': { field: 'state_province_id' },
+            'api.Address.getoptions': { field: 'country_id' }
+            // Bit hacky - capitalising here allows us two chained 'getoptions' requests, otherwise the
+            // second would overwrite the first.
         };
         return request('Event', 'get', params).then(function (values) {
             return values[0];
@@ -339,8 +343,20 @@ angular.module('civimobile').service('ApiService', ['$http', '$q', '$cacheFactor
         return request('Event', 'getfields', { api_action: 'get' }, false, then, true);
     }
 
-    this.saveEvent = function (fields) {
-        return request('Event', 'update', fields, true);
+    this.saveEvent = function (fields, address) {
+        var e = request('Event', 'update', fields, true);
+        if (address) { // If we have an address, update that too.
+            address.contact_id = userId; // Set in index.php, current user id.
+            // A little bit complicated, essentially we create a new address record and update the location
+            // block to refer to the new address. Being conservative in case address is used by more than one
+            // entity.
+            var a = request('Address', 'create', address, true);
+            a.then(function (address) {
+                return request('LocBlock', 'create', { id: fields.loc_block_id, address_id: address[0].id }, true);
+            });
+            return $q.all([e,a]);
+        }
+        return e;
         // FIXME what to do now?
     }
 

@@ -5,8 +5,26 @@
     <li class='right icon' ui-sref='^.attendees'><i class='icon-users'></i></li>
 </ul>
 <div class='content'>
-    <p>{{ 'Address: ' + event.address.street_address + ', ' + event.address.city + ', ' + event.address.postal_code }}</p>
-    <p>{{ 'From ' + event.event.start_date + ' until ' + event.event.end_date + '.'}}</p>
-    <p>{{ event.event.summary }}</p>
-    <!--<p>{{ event.event.full_text }}</p>-->
+    <form class='pure-form pure-form-aligned'>
+        <div class='pure-control-group' ng-show='event.address.street_address'>
+            <label>Address</label>
+            <div class='value'>{{ event.address.street_address + ', ' + event.address.city + ', ' + event.address.state.value + ', ' + event.address.postal_code + ', ' + event.address.country.value }}</div>
+        </div>
+        <div class='pure-control-group' ng-show='event.event.start_date'>
+            <label>Starts at</label>
+            <div class='value'>{{ event.event.start_date | date : 'h:mm a, EEE d MMMM, y' }}</div>
+        </div>
+        <div class='pure-control-group' ng-show='event.event.end_date'>
+            <label>Ends at</label>
+            <div class='value'>{{ event.event.end_date | date : 'h:mm a, EEE d MMMM, y' }}</div>
+        </div>
+        <div class='pure-control-group' ng-show='event.event.summary'>
+            <label>Summary</label>
+            <div class='value'>{{ event.event.summary }}</div>
+        </div>
+        <div class='pure-control-group' ng-show='event.event.description'>
+            <label>Description</label>
+            <div class='value'>{{ event.event.description }}</div>
+        </div>
+    </form>
 </div>
