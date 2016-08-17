@@ -73,6 +73,10 @@ class civimobile {
     require_once 'partials/memberships.html';
     exit;
   }
+  static public function membershipPartial() {
+    require_once 'partials/membership.html';
+    exit;
+  }
   static public function donationsPartial() {
     require_once 'partials/donations.html';
     exit;

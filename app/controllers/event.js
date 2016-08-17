@@ -11,7 +11,7 @@ angular.module('civimobile').controller('EventController', ['$state', '$statePar
     this.displayRegistered = true;
     this.displayCheckedIn = true;
     this.loadingParticipants = true;
-    var addressModified; // So we can see if it's been updated.
+    var addressModified = false; // So we can see if it's been updated.
 
     // So we can refer to 'this' within promises.
     var x = this;
@@ -25,7 +25,7 @@ angular.module('civimobile').controller('EventController', ['$state', '$statePar
             x.address = address;
         }
         x.stateOptions = event['api.address.getoptions'].values;
-        x.countryOptions = event['api.Address.getoptions'].values; // See comment in ApiService
+        x.countryOptions = event['api.Address.getoptions'].values; // See comment in ApiService.
         if (address) {
             for (var i = 0; i < x.stateOptions.length; i++) {
                 if (x.stateOptions[i].key == x.address.state_province_id) {

@@ -396,4 +396,24 @@ angular.module('civimobile').service('ApiService', ['$http', '$q', '$cacheFactor
         });
     }
 
+    this.getMembership = function (id) {
+        var params = {
+            id: id,
+            active_only: true,
+            'api.Membership.getoptions': { field: 'status_id' },
+            return: ['membership_type_id.name', 'membership_type_id',
+                     'contact_id.display_name', 'contact_id', 'is_pay_later',
+                     'status_id', 'is_override', 'join_date', 'start_date',
+                     'end_date', 'source']
+        }
+        return request('Membership', 'getsingle', params).then(function (value) {
+            value.display_name = value['contact_id.display_name'];
+            value.membership_name = value['membership_type_id.name'];
+            value.statusOptions = value['api.Membership.getoptions'].values;
+            delete value['api.Membership.getoptions'];
+            console.log(value);
+            return value;
+        });
+    }
+
 }]);

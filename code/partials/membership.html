@@ -1,0 +1,37 @@
+<ul class='subheader menu horizontal-menu'>
+    <li class='left icon' ui-sref='^.^.list'><i class='icon-back'></i></li>
+    <li class='middle-item'><h3>{{ membership.membership.display_name }}</h3></li>
+    <li class='right icon' ui-sref='^.edit'><i class='icon-edit'></i></li>
+</ul>
+<div class='content'>
+    <form class='pure-form pure-form-aligned'>
+        <div class='pure-control-group' ng-show='membership.membership.membership_name'>
+            <label>Membership type</label>
+            <div class='value'>{{ membership.membership.membership_name }}</div>
+        </div>
+        <div class='pure-control-group' ng-show='membership.membership.join_date'>
+            <label>Join date</label>
+            <div class='value'>{{ membership.membership.join_date | date : 'EEE d MMMM, y' }}</div>
+        </div>
+        <div class='pure-control-group' ng-show='membership.membership.start_date'>
+            <label>Start date</label>
+            <div class='value'>{{ membership.membership.start_date | date : 'EEE d MMMM, y' }}</div>
+        </div>
+        <div class='pure-control-group' ng-show='membership.membership.end_date'>
+            <label>End date</label>
+            <div class='value'>{{ membership.membership.end_date | date : 'EEE d MMMM, y' }}</div>
+        </div>
+        <div class='pure-control-group' ng-show='membership.membership.status'>
+            <label>Membership status</label>
+            <div class='value'>{{ membership.membership.status.value }}</div>
+        </div>
+        <div class='pure-control-group' ng-show='membership.membership.source'>
+            <label>Source</label>
+            <div class='value'>{{ membership.membership.source }}</div>
+        </div>
+        <div class='pure-control-group' ng-show=''>
+            <label></label>
+            <div class='value'></div>
+        </div>
+    </form>
+</div>

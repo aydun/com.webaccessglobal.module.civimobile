@@ -11,7 +11,7 @@
         <div class='tab' ng-class='memberships.selected(-1)' ng-click='memberships.show(-1)'>Show all</div>
     </div>
     <div class='content'>
-        <div class='list-item' ng-repeat='m in memberships.members' ng-show='!memberships.loadingMembers && (memberships.selectedId == -1 || memberships.types[memberships.selectedId].id == m.membership_type_id)'>
+        <div class='list-item' ng-repeat='m in memberships.members' ng-show='!memberships.loadingMembers && (memberships.selectedId == -1 || memberships.types[memberships.selectedId].id == m.membership_type_id)' ui-sref='^.detail.view({ id: m.id })'>
             <div class='list-item-label'>
                 <p>{{ m.display_name }} <span class='label' ng-show='memberships.selectedId == -1'>({{ m.membership_name }})</span></p>
             </div>

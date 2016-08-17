@@ -80,6 +80,10 @@
     <page_callback>civimobile::membershipsPartial</page_callback>
   </item>
   <item>
+    <path>civicrm/mobile/partials/membership</path>
+    <page_callback>civimobile::membershipPartial</page_callback>
+  </item>
+  <item>
     <path>civicrm/mobile/partials/donations</path>
     <page_callback>civimobile::donationsPartial</page_callback>
   </item>
