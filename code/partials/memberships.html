@@ -1,1 +1,22 @@
-<p>Memberships partial</p>
+<ul class='subheader menu horizontal-menu'>
+    <li class='left icon' ui-sref='home'><i class='icon-back'></i></li>
+    <li class='middle-item'>
+        <input class='holo' type='search' name='memberships_search' placeholder='Search' ng-model='memberships.query' ng-change='memberships.search()' ng-model-options='{updateOn:"default blur",debounce:{"default":150,"blur":0}}'/>
+    </li>
+    <li class='right icon'><i class='icon-new-user'></i></li>
+</ul>
+<div class='content'>
+    <div class='tabs'>
+        <div class='tab' ng-repeat='t in memberships.types' ng-class='memberships.selected($index)' ng-click='memberships.show($index)'>{{ t.name }}</div>
+        <div class='tab' ng-class='memberships.selected(-1)' ng-click='memberships.show(-1)'>Show all</div>
+    </div>
+    <div class='content'>
+        <div class='list-item' ng-repeat='m in memberships.members' ng-show='!memberships.loadingMembers && (memberships.selectedId == -1 || memberships.types[memberships.selectedId].id == m.membership_type_id)'>
+            <div class='list-item-label'>
+                <p>{{ m.display_name }} <span class='label' ng-show='memberships.selectedId == -1'>({{ m.membership_name }})</span></p>
+            </div>
+        </div>
+        <div class='empty-list' ng-show='memberships.members.length == 0 && !memberships.loadingMembers'><p>No results</p></div>
+        <div class='empty-list' ng-show='memberships.loadingMembers'><p>Loading...</p></div>
+    </div>
+</div>

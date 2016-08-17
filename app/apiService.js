@@ -367,4 +367,33 @@ angular.module('civimobile').service('ApiService', ['$http', '$q', '$cacheFactor
         // FIXME what to do now?
     }
 
+    this.getMembershipTypes = function () {
+        function then(values) {
+            var ms = [];
+            for (var i = 0; i < values.length; i++) {
+                if (values[i].is_active) {
+                    ms.push(values[i]);
+                }
+            }
+            return ms;
+        }
+        return request('MembershipType', 'get', {}, false, then, true);
+    }
+
+    this.getMemberships = function (q) {
+        var params = {
+            'contact_id.display_name': { 'LIKE': '%' + q + '%' },
+            return: ['membership_type_id.name', 'membership_type_id', 'contact_id.display_name', 'contact_id', 'is_pay_later', 'status_id'],
+            options: { limit: 0, sort: 'contact_id.sort_name' }
+            // FIXME: should paginate and load X at a time.
+        }
+        return request('Membership', 'get', params).then(function (values) {
+            for (var i = 0; i < values.length; i++) {
+                values[i].display_name = values[i]['contact_id.display_name'];
+                values[i].membership_name = values[i]['membership_type_id.name'];
+            }
+            return values;
+        });
+    }
+
 }]);
