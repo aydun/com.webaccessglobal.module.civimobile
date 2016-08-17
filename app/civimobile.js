@@ -110,6 +110,10 @@ angular.module('civimobile', ['ui.router', 'ngDialog', 'ct.ui.router.extras.core
                 url: '',
                 templateUrl: 'mobile/partials/membership'
             })
+            .state('memberships.detail.edit', {
+                url: '/edit',
+                templateUrl: 'mobile/partials/edit_membership'
+            })
             .state('donations', {
                 url: '/donations',
                 templateUrl: 'mobile/partials/donations',

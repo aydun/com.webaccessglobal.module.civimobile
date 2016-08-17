@@ -1,0 +1,34 @@
+<ul class='subheader menu horizontal-menu'>
+    <li class='left icon' ui-sref='^.view'><i class='icon-back'></i></li>
+    <li class='middle-item'><h3>Edit <i>{{ membership.membership.display_name }}</i></h3></li>
+    <li class='right icon' ng-click='membership.save()'><i class='icon-save'></i></li>
+</ul>
+<!--<div class='error' ng-show='membership.error'></div>-->
+<div class='content'>
+    <form class='pure-form pure-form-aligned'>
+        <div class='pure-control-group'>
+            <label for='membership_type_id'>Membership type</label>
+            <select type='select' id='membership_type_id' ng-model='membership.membership.membership_type_id' ng-options='o.id as o.name for o in memberships.types' required></select>
+        </div>
+        <div class='pure-control-group'>
+            <label for='start_date'>Join date</label>
+            <input type='date' id='join_date' ng-model='membership.membership.join_date' required>
+        </div>
+        <div class='pure-control-group'>
+            <label for='start_date'>Start date</label>
+            <input type='date' id='start_date' ng-model='membership.membership.start_date' required>
+        </div>
+        <div class='pure-control-group' ng-if='membership.membership.membership_type_id != 3'>
+            <label for='end_date'>End date</label>
+            <input type='date' id='end_date' ng-model='membership.membership.end_date' required>
+        </div>
+        <div class='pure-control-group'>
+            <label for='status_id'>Membership status</label>
+            <select type='select' id='status_id' ng-model='membership.membership.status' ng-options='o as o.value for o in membership.membership.statusOptions' required></select>
+        </div>
+        <div class='pure-control-group'>
+            <label for='source'>Source</label>
+            <input type='text' id='source' ng-model='membership.membership.source'>
+        </div>
+    </form>
+</div>

@@ -411,9 +411,12 @@ angular.module('civimobile').service('ApiService', ['$http', '$q', '$cacheFactor
             value.membership_name = value['membership_type_id.name'];
             value.statusOptions = value['api.Membership.getoptions'].values;
             delete value['api.Membership.getoptions'];
-            console.log(value);
             return value;
         });
+    }
+
+    this.saveMembership = function (m) {
+        return request('Membership', 'create', m, true);
     }
 
 }]);
