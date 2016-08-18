@@ -3,7 +3,7 @@
     <li class='middle-item'>
         <input class='holo' type='search' name='memberships_search' placeholder='Search' ng-model='memberships.query' ng-change='memberships.search()' ng-model-options='{updateOn:"default blur",debounce:{"default":150,"blur":0}}'/>
     </li>
-    <li class='right icon'><i class='icon-new-user'></i></li>
+    <li class='right icon' ng-click='memberships.new()'><i class='icon-new-user'></i></li>
 </ul>
 <div class='content'>
     <div class='tabs'>

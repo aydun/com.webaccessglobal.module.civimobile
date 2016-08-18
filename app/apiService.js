@@ -176,9 +176,6 @@ angular.module('civimobile').service('ApiService', ['$http', '$q', '$cacheFactor
         // Unfortunately multiple api requests are needed here (necessitated by Civi api).
         // One for normal contact fields, and then one for each email or phone number edited.
         // The returned promise is resolved when all requests return successfully.
-        var f = request('Contact', 'create', fields, true);
-        var e = []; var p = [];
-
         var f; var e = []; var p= [];
         f = request('Contact', 'create', fields, true);
         if (emails) {
@@ -210,7 +207,7 @@ angular.module('civimobile').service('ApiService', ['$http', '$q', '$cacheFactor
         var x = e.concat(p)
         x.unshift(f);
         return $q.all(x).then(function (vss) {
-            return vss[0][0].id;
+            return vss[0][0];
         });
     }
 
@@ -394,6 +391,10 @@ angular.module('civimobile').service('ApiService', ['$http', '$q', '$cacheFactor
             }
             return values;
         });
+    }
+
+    this.getMembershipStatusOptions = function () {
+        return request('Membership', 'getoptions', { field: 'status_id' }, false, null, true);
     }
 
     this.getMembership = function (id) {

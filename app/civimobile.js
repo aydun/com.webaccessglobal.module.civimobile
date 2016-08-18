@@ -99,6 +99,12 @@ angular.module('civimobile', ['ui.router', 'ngDialog', 'ct.ui.router.extras.core
                 url: '',
                 templateUrl: 'mobile/partials/memberships'
             })
+            .state('memberships.new', {
+                url: '/new?id?name',
+                templateUrl: 'mobile/partials/new_membership',
+                controller: 'MembershipController',
+                controllerAs: 'membership'
+            })
             .state('memberships.detail', {
                 url: '/:id',
                 abstract: true,

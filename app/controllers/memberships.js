@@ -1,5 +1,5 @@
 'use strict';
-angular.module('civimobile').controller('MembershipsController', ['ApiService', function (ApiService) {
+angular.module('civimobile').controller('MembershipsController', ['$state', 'ApiService', 'ngDialog', '$previousState', function ($state, ApiService, ngDialog, $previousState) {
     this.types = [];
     this.members = [];
     this.selectedId = -1;
@@ -30,4 +30,34 @@ angular.module('civimobile').controller('MembershipsController', ['ApiService', 
         });
     }
     this.search();
+
+    this.new = function () {
+        ngDialog.open({ template: 'mobile/partials/dialogs/new_membership' })
+        .closePromise.then(function (data) {
+            var code = data.value;
+            if (code == 1) { // Use existing contact.
+                ngDialog.open({
+                    template: 'mobile/partials/dialogs/new_participant',
+                    controller: 'ContactsController',
+                    controllerAs: 'contacts',
+                    appendClassName: 'ngdialog-list'})
+                .closePromise.then(function (data) {
+                    var c = data.value;
+                    if (c.id) {
+                        for (var i = 0; i < x.members.length; i++) {
+                            if (x.members[i].contact_id == c.id) {
+                                ngDialog.open({ template: 'mobile/partials/dialogs/message', data: 'This contact is already a member.' });
+                                return;
+                            }
+                        }
+                        $state.go('^.new', { id: c.id });
+                    }
+                });
+            }
+            if (code == 2) { // Create new contact.
+                $previousState.set('next', 'memberships.new');
+                ngDialog.open({ template: 'mobile/partials/dialogs/new_contact' });
+            }
+        });
+    }
 }]);

@@ -2,6 +2,7 @@
     <li class='left icon' ui-sref='^.^.list'><i class='icon-back'></i></li>
     <li class='middle-item'><h3>{{ membership.membership.display_name }}</h3></li>
     <li class='right icon' ui-sref='^.edit'><i class='icon-edit'></i></li>
+    <li class='right icon' ui-sref='contacts.detail.view({id:membership.membership.contact_id})'><i class='icon-user'></i></li>
 </ul>
 <div class='content'>
     <form class='pure-form pure-form-aligned'>

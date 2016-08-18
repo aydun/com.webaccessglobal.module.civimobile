@@ -1,5 +1,5 @@
 'use strict';
-angular.module('civimobile').controller('ContactController', ['$state', '$stateParams', 'ApiService', function ($state, $stateParams, ApiService) {
+angular.module('civimobile').controller('ContactController', ['$state', '$stateParams', 'ApiService', '$previousState', function ($state, $stateParams, ApiService, $previousState) {
     this.id = $stateParams.id;
     this.type = $stateParams.type
     this.contact = {};
@@ -108,12 +108,25 @@ angular.module('civimobile').controller('ContactController', ['$state', '$stateP
         }
     }
 
+    this.back = function (route) {
+        if ($previousState.get('next')) {
+            // If there's a 'next' state, then the previous state is more relevant than
+            // the hierarchical parent, so it's not .go('next').
+            $previousState.go();
+            $previousState.forget('next');
+        } else {
+            $state.go(route, null, { reload: route == '^.view' });
+        }
+    }
+
     this.save = function () {
         var fs = {};
         for (var i = 0; i < this.fields.length; i++) {
             var f = this.fields[i];
             if (f.options) {
-                fs[f.field_name] = this.contact[f.field_name].key;
+                if (this.contact[f.field_name]) {
+                    fs[f.field_name] = this.contact[f.field_name].key;
+                }
             } else {
                 fs[f.field_name] = this.contact[f.field_name];
             }
@@ -134,8 +147,13 @@ angular.module('civimobile').controller('ContactController', ['$state', '$stateP
             p.is_primary = p.id == this.primaryPhone ? '1' : '0';
             p.is_billing = p.id == this.billingPhone ? '1' : '0';
         }
-        ApiService.saveContact(fs, this.emails.concat(this.deletedEmails), this.phones.concat(this.deletedPhones)).then(function (id) {
-            $state.go('contacts.detail.view', { id: id }, { reload: true });
+        ApiService.saveContact(fs, this.emails.concat(this.deletedEmails), this.phones.concat(this.deletedPhones)).then(function (c) {
+            if ($previousState.get('next')) {
+                $state.go($previousState.get('next').state.name, { id: c.id, name: c.display_name });
+                $previousState.forget('next');
+            } else {
+                $state.go('contacts.detail.view', { id: c.id }, { reload: true });
+            }
         });
     }
 }]);

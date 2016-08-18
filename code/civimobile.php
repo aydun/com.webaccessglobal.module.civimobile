@@ -41,6 +41,10 @@ class civimobile {
     require_once 'partials/new_contribution.html';
     exit;
   }
+  static public function newMembershipPartial() {
+    require_once 'partials/new_membership.html';
+    exit;
+  }
   static public function eventsPartial() {
     require_once 'partials/events.html';
     exit;
@@ -73,12 +77,20 @@ class civimobile {
     require_once 'partials/memberships.html';
     exit;
   }
+  static public function newMembershipDialog() {
+    require_once 'partials/dialogs/new_membership.html';
+    exit;
+  }
   static public function membershipPartial() {
     require_once 'partials/membership.html';
     exit;
   }
   static public function editMembershipPartial() {
     require_once 'partials/edit_membership.html';
+    exit;
+  }
+  static public function membershipFormPartial() {
+    require_once 'partials/membership_form.html';
     exit;
   }
   static public function donationsPartial() {
