@@ -52,8 +52,8 @@
     <page_callback>civimobile::eventPartial</page_callback>
   </item>
   <item>
-    <path>civicrm/mobile/partials/event_attendees</path>
-    <page_callback>civimobile::eventAttendeesPartial</page_callback>
+    <path>civicrm/mobile/partials/event_participants</path>
+    <page_callback>civimobile::eventParticipantsPartial</page_callback>
   </item>
   <item>
     <path>civicrm/mobile/partials/dialogs/check_in_participant</path>

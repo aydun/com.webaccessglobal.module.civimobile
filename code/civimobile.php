@@ -49,8 +49,8 @@ class civimobile {
     require_once 'partials/edit_event.html';
     exit;
   }
-  static public function eventAttendeesPartial() {
-    require_once 'partials/event_attendees.html';
+  static public function eventParticipantsPartial() {
+    require_once 'partials/event_participants.html';
     exit;
   }
   static public function checkInParticipantDialog() {

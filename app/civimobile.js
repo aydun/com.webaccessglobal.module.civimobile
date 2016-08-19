@@ -71,9 +71,9 @@ angular.module('civimobile', ['ui.router', 'ngDialog', 'ct.ui.router.extras.core
                 url: '',
                 templateUrl: 'mobile/partials/event'
             })
-            .state('events.detail.attendees', {
-                url: '/attendees',
-                templateUrl: 'mobile/partials/event_attendees'
+            .state('events.detail.participants', {
+                url: '/participants',
+                templateUrl: 'mobile/partials/event_participants'
             })
             .state('events.detail.edit', {
                 url: '/edit',
