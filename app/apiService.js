@@ -76,7 +76,8 @@ angular.module('civimobile').service('ApiService', ['$http', '$q', '$cacheFactor
             var profile = [];
             for (var i = 0; i < values.length; i++) {
                 // We only want active fields of some subtype of contact.
-                if (values[i].is_active === '1' && ['Individual', 'Organization', 'Household', 'Contact'].indexOf(values[i].field_type) > -1) {
+                if (values[i].is_active === '1' &&
+                            ['Individual', 'Organization', 'Household', 'Contact'].indexOf(values[i].field_type) > -1) {
                     var field = {};
                     field.type = values[i]['api.Contact.getfield'].values.html ? values[i]['api.Contact.getfield'].values.html.type : '';
                     field.field_name = values[i].field_name;
@@ -208,26 +209,6 @@ angular.module('civimobile').service('ApiService', ['$http', '$q', '$cacheFactor
         x.unshift(f);
         return $q.all(x).then(function (vss) {
             return vss[0][0];
-        });
-    }
-
-    this.getContributionFields = function () {
-        var params = {
-            api_action: 'create',
-            return: ['name', 'title', 'html', 'required']
-        };
-        return request('Contribution', 'getfields', params, false, null, true);
-    }
-
-    this.getContributionFieldOptions = function (field) {
-        return request('Contribution', 'getoptions', { field: field }, false, null, true);
-    }
-
-    this.saveContribution = function (fields) {
-        // If 'default' currency remove the property; the API will handle this as default.
-        if (fields.currency == '000') { fields.currency = ''; }
-        return request('Contribution', 'create', fields, true).then(function (values) {
-            return values[0];
         });
     }
 
@@ -380,7 +361,9 @@ angular.module('civimobile').service('ApiService', ['$http', '$q', '$cacheFactor
     this.getMemberships = function (q) {
         var params = {
             'contact_id.display_name': { 'LIKE': '%' + q + '%' },
-            return: ['membership_type_id.name', 'membership_type_id', 'contact_id.display_name', 'contact_id', 'is_pay_later', 'status_id'],
+            active_only: true,
+            return: ['membership_type_id.name', 'membership_type_id', 'contact_id.display_name',
+                     'contact_id', 'is_pay_later', 'status_id'],
             options: { limit: 0, sort: 'contact_id.sort_name' }
             // FIXME: should paginate and load X at a time.
         }
@@ -402,22 +385,90 @@ angular.module('civimobile').service('ApiService', ['$http', '$q', '$cacheFactor
             id: id,
             active_only: true,
             'api.Membership.getoptions': { field: 'status_id' },
+            'api.Contribution.getoptions': { field: 'contribution_status_id' },
+            'api.MembershipPayment.get': {
+                membership_id: id,
+                return: ['contribution_id.total_amount', 'contribution_id.currency',
+                         'contribution_id.receive_date', 'contribution_id.contribution_status_id',
+                         'contribution_id']
+            },
             return: ['membership_type_id.name', 'membership_type_id',
                      'contact_id.display_name', 'contact_id', 'is_pay_later',
                      'status_id', 'is_override', 'join_date', 'start_date',
                      'end_date', 'source']
         }
         return request('Membership', 'getsingle', params).then(function (value) {
+            var cStatusOptions = value['api.Contribution.getoptions'].values;
             value.display_name = value['contact_id.display_name'];
+            delete value['contact_id.display_name'];
             value.membership_name = value['membership_type_id.name'];
+            delete value['membership_type_id.name'];
             value.statusOptions = value['api.Membership.getoptions'].values;
             delete value['api.Membership.getoptions'];
+            value.payments = value['api.MembershipPayment.get'].values;
+            delete value['api.MembershipPayment.get'];
+            for (var i = 0; i < value.payments.length; i++) {
+                var p = value.payments[i];
+                p.total_amount = p['contribution_id.total_amount'];
+                delete p['contribution_id.total_amount'];
+                p.currency = p['contribution_id.currency'];
+                delete p['contribution_id.currency'];
+                p.receive_date = new Date(p['contribution_id.receive_date']);
+                delete p['contribution_id.receive_date'];
+                for (var j = 0; j < cStatusOptions.length; j++) {
+                    if (p['contribution_id.contribution_status_id'] == cStatusOptions[j].key) {
+                        p.status = cStatusOptions[j].value;
+                    }
+                }
+                delete p['contribution_id.contribution_status_id'];
+            }
             return value;
         });
     }
 
     this.saveMembership = function (m) {
         return request('Membership', 'create', m, true);
+    }
+
+    this.saveMembershipPayment = function (mId, cId) {
+        var params = { membership_id: mId, contribution_id: cId };
+        return request('MembershipPayment', 'create', params, true);
+    }
+
+    this.getContribution = function (id) {
+        var params = {
+            id: id,
+            'api.Contact.getsingle': { id: '$value.contact_id', return: ['display_name'] },
+            return: ['financial_type_id', 'total_amount', 'currency', 'contribution_source',
+                     'contribution_status_id']
+        }
+        return request('Contribution', 'getsingle', params).then(function (result) {
+            result.source = result.contribution_source;
+            delete result.contribution_source;
+            result.display_name = result['api.Contact.getsingle'].display_name;
+            delete result['api.Contact.getsingle'];
+            return result;
+        });
+    }
+
+    this.getContributionFields = function () {
+        var params = {
+            api_action: 'create',
+            return: ['name', 'title', 'html', 'required']
+        };
+        return request('Contribution', 'getfields', params, false, null, true);
+    }
+
+    this.getContributionFieldOptions = function (field) {
+        return request('Contribution', 'getoptions', { field: field }, false, null, true);
+    }
+
+    this.saveContribution = function (fields) {
+        // If 'default' currency remove the property; the API will handle this as default.
+        if (fields.currency == '000') { fields.currency = ''; }
+        return request('Contribution', 'create', fields, true).then(function (values) {
+            return values[0];
+        });
     }
 
 }]);

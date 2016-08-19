@@ -338,4 +338,7 @@ form.pure-form > input[type='text'] {
     width: 100%;
     max-width: 220px;
 }
+.pure-button.value {
+    margin: 0;
+}
 

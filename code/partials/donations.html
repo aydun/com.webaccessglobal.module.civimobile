@@ -17,7 +17,7 @@
 <div class='content'>
     <div vs-repeat vs-excess='4' vs-scrolled-to-end='contacts.loadMore()' vs-scrolled-to-end-offset=5 ng-hide='contacts.loading > 0'>
         <div class='list-item' ng-repeat='c in contacts.contacts'>
-            <div class='list-item-label' ui-sref='contacts.detail.contribution({id:c.contact_id,type:1,source:"CiviMobile: donation"})'><p>{{ c.display_name }}</p></div>
+            <div class='list-item-label' ui-sref='contributions.new({cId:c.contact_id,name:c.display_name,type:1,source:"CiviMobile: donation"})'><p>{{ c.display_name }}</p></div>
         </div>
     </div>
     <div class='empty-list' ng-show='contacts.contacts.length == 0 && contacts.loading == 0'><p>No results</p></div>

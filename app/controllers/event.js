@@ -80,11 +80,16 @@ angular.module('civimobile').controller('EventController', ['$state', '$statePar
                 if (code != 1 && code != 2 && code != 3) { // No action taken, so revert 'check in'.
                     return p.checkedIn = false;
                 }
-                if (code == 2) {                                                  // 4 = 'event fee' type
-                    $state.go('contacts.detail.contribution', { id: p.contact_id, type: 4, currency: x.event.currency, source: x.event.event_title + ' : check in at event' });
+                if (code == 2) {
+                    $state.go('contributions.new', { cId: p.contact_id,
+                                                     name: p.display_name,
+                                                     type: 4, // 4 = 'event fee' type
+                                                     currency: x.event.currency,
+                                                     source: x.event.event_title + ' : check in at event' });
                 }
                 if (code == 3) {
-                    ApiService.saveContribution({ id: p.contribution.contribution_id, contribution_status_id: 1 }); // 1 = 'complete'
+                    ApiService.saveContribution({ id: p.contribution.contribution_id,
+                                                  contribution_status_id: 1 }); // 1 = 'complete'
                 }
                 ApiService.updateParticipant(p.id, p.checkedIn, p.payLater);
             });
@@ -108,7 +113,8 @@ angular.module('civimobile').controller('EventController', ['$state', '$statePar
             if (contact.contact_id) {
                 for (var i = 0; i < x.participants.length; i++) {
                     if (x.participants[i].contact_id == contact.contact_id) { // If contact is already participant do nothing.
-                        ngDialog.open({ template: 'mobile/partials/dialogs/message', data: 'This contact is already an event participant' });
+                        ngDialog.open({ template: 'mobile/partials/dialogs/message',
+                                        data: 'This contact is already an event participant' });
                         return;
                     }
                 }

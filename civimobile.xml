@@ -40,10 +40,6 @@
     <page_callback>civimobile::contactFormPartial</page_callback>
   </item>
   <item>
-    <path>civicrm/mobile/partials/new_contribution</path>
-    <page_callback>civimobile::newContributionPartial</page_callback>
-  </item>
-  <item>
     <path>civicrm/mobile/partials/new_membership</path>
     <page_callback>civimobile::newMembershipPartial</page_callback>
   </item>
@@ -98,6 +94,18 @@
   <item>
     <path>civicrm/mobile/partials/membership_form</path>
     <page_callback>civimobile::membershipFormPartial</page_callback>
+  </item>
+  <item>
+    <path>civicrm/mobile/partials/new_contribution</path>
+    <page_callback>civimobile::newContributionPartial</page_callback>
+  </item>
+  <item>
+    <path>civicrm/mobile/partials/edit_contribution</path>
+    <page_callback>civimobile::editContributionPartial</page_callback>
+  </item>
+  <item>
+    <path>civicrm/mobile/partials/contribution_form</path>
+    <page_callback>civimobile::contributionFormPartial</page_callback>
   </item>
   <item>
     <path>civicrm/mobile/partials/donations</path>

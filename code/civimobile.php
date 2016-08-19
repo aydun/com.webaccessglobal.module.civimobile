@@ -37,14 +37,6 @@ class civimobile {
     require_once 'partials/contact_form.html';
     exit;
   }
-  static public function newContributionPartial() {
-    require_once 'partials/new_contribution.html';
-    exit;
-  }
-  static public function newMembershipPartial() {
-    require_once 'partials/new_membership.html';
-    exit;
-  }
   static public function eventsPartial() {
     require_once 'partials/events.html';
     exit;
@@ -91,6 +83,22 @@ class civimobile {
   }
   static public function membershipFormPartial() {
     require_once 'partials/membership_form.html';
+    exit;
+  }
+  static public function newMembershipPartial() {
+    require_once 'partials/new_membership.html';
+    exit;
+  }
+  static public function newContributionPartial() {
+    require_once 'partials/new_contribution.html';
+    exit;
+  }
+  static public function editContributionPartial() {
+    require_once 'partials/edit_contribution.html';
+    exit;
+  }
+  static public function contributionFormPartial() {
+    require_once 'partials/contribution_form.html';
     exit;
   }
   static public function donationsPartial() {

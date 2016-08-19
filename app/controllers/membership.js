@@ -1,18 +1,21 @@
 'use strict';
-angular.module('civimobile').controller('MembershipController', ['$state', '$stateParams', 'ApiService', function ($state, $stateParams, ApiService) {
+angular.module('civimobile').controller('MembershipController', ['$state', '$stateParams', 'ApiService', '$previousState', function ($state, $stateParams, ApiService, $previousState) {
     this.id = $stateParams.id; // Membership id if editing, contact id if creating.
     this.membership = {};
     this.name = '';
     this.statusOptions = [];
+    this.payments;
 
     // So we can refer to 'this' in promises.
     var x = this;
 
     if ($state.includes('memberships.detail')) {
-        // Editing a membership
+        // Existing membership
         ApiService.getMembership(this.id).then(function (value) {
             x.statusOptions = value.statusOptions;
             delete value.statusOptions;
+            x.payments = value.payments;
+            delete value.payments;
             for (var i = 0; i < x.statusOptions.length; i++) {
                 if (value.status_id == x.statusOptions[i].key) {
                     value.status = x.statusOptions[i];
@@ -42,11 +45,13 @@ angular.module('civimobile').controller('MembershipController', ['$state', '$sta
         this.name = $stateParams.name;
     }
 
+    this.newContribution = function () {
+        var name = this.membership.display_name || this.name;
+        $state.go('contributions.new', { cId: this.membership.contact_id, name: name, mId: this.membership.id, type: 2, source: x.membership.membership_name + ' Membership: Civimobile' });
+    }
+
     this.save = function () {
         var m = angular.copy(this.membership);
-        if (m.membership_name == 'Lifetime') {
-            m.end_date = '';
-        }
         m.status_id = m.status.key;
         delete m.status;
         delete m.statusOptions;

@@ -50,7 +50,7 @@ angular.module('civimobile').controller('MembershipsController', ['$state', 'Api
                                 return;
                             }
                         }
-                        $state.go('^.new', { id: c.id });
+                        $state.go('^.new', { id: c.id, name: c.display_name });
                     }
                 });
             }

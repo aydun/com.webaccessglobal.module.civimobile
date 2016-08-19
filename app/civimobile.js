@@ -46,12 +46,6 @@ angular.module('civimobile', ['ui.router', 'ngDialog', 'ct.ui.router.extras.core
                 url: '/edit',
                 templateUrl: 'mobile/partials/edit_contact'
             })
-            .state('contacts.detail.contribution', {
-                url: '/contribution?type?amount?currency?status?source',
-                templateUrl: 'mobile/partials/new_contribution',
-                controller: 'ContributionController',
-                controllerAs: 'contribution'
-            })
             .state('events', {
                 url: '/events',
                 abstract: true,
@@ -128,6 +122,26 @@ angular.module('civimobile', ['ui.router', 'ngDialog', 'ct.ui.router.extras.core
                 data: {
                     title: 'Collect donations'
                 }
+            })
+            .state('contributions', {
+                url: '/contributions',
+                abstract: true,
+                template: '<ui-view/>',
+                data: {
+                    title: 'Manage contributions'
+                }
+            })
+            .state('contributions.new', {
+                url: '/new?cId?mId?name?type?amount?currency?status?source',
+                templateUrl: 'mobile/partials/new_contribution',
+                controller: 'ContributionController',
+                controllerAs: 'contribution'
+            })
+            .state('contributions.edit', {
+                url: '/:id/edit',
+                templateUrl: 'mobile/partials/edit_contribution',
+                controller: 'ContributionController',
+                controllerAs: 'contribution'
             })
             .state('surveys', {
                 url: '/surveys',

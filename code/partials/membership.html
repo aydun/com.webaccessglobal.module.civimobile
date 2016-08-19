@@ -30,5 +30,15 @@
             <label>Source</label>
             <div class='value'>{{ membership.membership.source }}</div>
         </div>
+        <br>
+        <legend>Membership payments</legend>
+        <div class='pure-control-group' ng-repeat='p in membership.payments'>
+            <label>{{ p.receive_date | date : 'EEE d MMMM, y' }}</label>
+            <!-- <div class='value'>{{ p.total_amount }} {{ p.currency }} <span class='label'>({{ p.status }})</span></div> -->
+            <a class='pure-button pure-button-secondary value' ui-sref='contributions.edit({id:p.contribution_id})'>
+                {{ p.total_amount }} {{ p.currency }} <span class='label'>({{ p.status }})</span>
+            </a>
+        </div>
+        <center><a class='pure-button pure-button-secondary' ng-click='membership.newContribution()'>Record new membership payment</a></center>
     </form>
 </div>

@@ -11,6 +11,7 @@
             <div class='value'>{{ contact.contact[f.field_name].value ? contact.contact[f.field_name].value : contact.contact[f.field_name] }}</div>
         </div>
         <div ng-if='contact.hasEmail && contact.emails.length > 0'>
+            <br>
             <legend>Email</legend>
             <div ng-repeat='e in contact.emails'>
                 <center>
@@ -26,6 +27,7 @@
             </div>
         </div>
         <div ng-if='contact.hasPhone && contact.phones.length > 0'>
+            <br>
             <legend>Phone</legend>
             <div ng-repeat='p in contact.phones'>
                 <center>
