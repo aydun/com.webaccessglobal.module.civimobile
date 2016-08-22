@@ -41,7 +41,6 @@ CiviMobile is a free and open source extension for CiviCRM that can be downloade
 
 The fields displayed and editable for each contact in CiviMobile are configured in CiviCRM profiles.
 
-
 You can create a new profile in `Administer > Custom Data and Screens >   Profiles`, and choose which profile is used for each contact type in `Administer > Custom Data and Screens > CiviMobile`.
 
 ### Credit
