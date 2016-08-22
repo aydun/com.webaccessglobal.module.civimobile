@@ -48,7 +48,6 @@ $includePath = $config->extensionsURL . DIRECTORY_SEPARATOR . 'com.webaccessglob
   <script type="text/javascript" src="<?php print $includePath; ?>app/controllers/memberships.js"></script>
   <script type="text/javascript" src="<?php print $includePath; ?>app/controllers/membership.js"></script>
   <script type="text/javascript" src="<?php print $includePath; ?>app/controllers/donations.js"></script>
-  <script type="text/javascript" src="<?php print $includePath; ?>app/controllers/surveys.js"></script>
   <script type="text/javascript">
     // Define globally default profile ids that will be used when creating new
     // records.
