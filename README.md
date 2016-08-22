@@ -33,7 +33,7 @@ Donations
 
 Requirements
 
-- CiviCRM 4.7.x
+- CiviCRM 4.6.x +
 
 CiviMobile is a free and open source extension for CiviCRM that can be downloaded from the extensions directory.
 
