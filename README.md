@@ -2,6 +2,8 @@
 
 A web application exposing a few specific actions in CiviCRM in a mobile-friendly way. Note that it is not a mobile interface for all of CiviCRM.
 
+Developed as a [GSOC 2016 project](https://github.com/AdamHillier/com.webaccessglobal.module.civimobile/wiki/GSOC-Project:-final-wrap-up).
+
 ### Features
 
 Contacts
