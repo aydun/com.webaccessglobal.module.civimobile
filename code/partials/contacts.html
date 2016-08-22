@@ -1,0 +1,28 @@
+<ul class='subheader menu horizontal-menu'>
+    <li class='left icon' ng-click='contacts.back()'><i class='icon-back'></i></li>
+    <li ng-hide='contacts.geoHeader' class='middle-item'>
+        <div class='input-left dropdown icon' ng-click='contacts.changeField(contacts.searchFields[0], true)'>
+            <i ng-class='"icon-" + contacts.searchFields[0]'></i>
+            <div class='dropdown-content'>
+                <div class='icon' ng-click='contacts.changeField(contacts.searchFields[1], true)'><i ng-class='"icon-" + contacts.searchFields[1]'></i></div>
+                <div class='icon' ng-click='contacts.changeField(contacts.searchFields[2], true)'><i ng-class='"icon-" + contacts.searchFields[2]'></i></div>
+            </div>
+        </div>
+        <div class='input-right'>
+            <input class='holo' type='search' name='contacts_search' placeholder='Search' ng-model='contacts.query' ng-change='contacts.search()' ng-model-options='{updateOn:"default blur",debounce:{"default":150,"blur":0}}'/>
+        </div>
+    </li>
+    <li ng-show='contacts.geoHeader' class='middle-item'><h3>{{ contacts.geoHeader }}</h3></li>
+    <li class='right icon' ng-click='contacts.geoSearch()'><i class='icon-location'></i></li>
+    <li class='right icon' ng-dialog='mobile/partials/dialogs/new_contact'><i class='icon-new-user'></i></li>
+</ul>
+<div class='content'>
+    <div vs-repeat vs-scrolled-to-end='contacts.loadMore()' vs-scrolled-to-end-offset=5 ng-hide='contacts.loading > 0'>
+        <div class='list-item' ng-repeat='c in contacts.contacts'>
+            <a ng-show='c.icon' href='{{c.url}}'><div class='icon icon-{{c.icon}}'></div></a>
+            <div class='list-item-label shift-right' ui-sref='contacts.detail.view({id:c.contact_id})'><p>{{ c.display_name }}</p></div>
+        </div>
+    </div>
+    <div class='empty-list' ng-show='contacts.contacts.length == 0 && contacts.loading == 0'><p>No results</p></div>
+    <div class='empty-list' ng-show='contacts.loadingMore || (contacts.contacts.length == 0 && contacts.loading > 0)'><p>Loading...</p></div>
+</div>

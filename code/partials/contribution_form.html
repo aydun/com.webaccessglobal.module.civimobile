@@ -1,0 +1,8 @@
+<form class='pure-form pure-form-aligned'>
+    <div class='pure-control-group' ng-repeat='f in contribution.fields' ng-switch='f.html.type'>
+        <label for='{{f.name}}'>{{ f.title }}</label>
+        <select ng-switch-when='Select' id='{{f.name}}' ng-model='contribution.contribution[f.name]' ng-options='(o.key).toString() as o.value for o in f.options' ng-required='f.required'></select>
+        <input ng-switch-when='Currency' type='number' step='0.01' id='{{f.name}}' ng-model='contribution.contribution[f.name]' ng-required='f.required'>
+        <input ng-switch-default type='text' id='{{f.name}}' ng-model='contribution.contribution[f.name]' ng-required='f.required'>
+    </div>
+</form>

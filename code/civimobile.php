@@ -1,38 +1,108 @@
 <?php
 class civimobile {
   static public function home() {
-    require_once 'civimobile.home.php';
+    require_once 'index.php';
     exit;
   }
 
-  static public function contacts() {
-    $action = $_GET['action'];
-    if ( $action == 'view' ) {
-      require_once 'civimobile.contact_view.html';
-    }
-    else {
-      require_once 'civimobile.contact.html';
-    }
+  static public function homePartial() {
+    require_once 'partials/home.html';
     exit;
   }
-
-  static public function participantCheckin() {
-    require_once 'civimobile.participant_checkin.html';
+  static public function contactsPartial() {
+    require_once 'partials/contacts.html';
     exit;
   }
-
-  static public function surveyContacts() {
-    require_once 'civimobile.survey_contacts.html';
+  static public function newContactDialog() {
+    require_once 'partials/dialogs/new_contact.html';
     exit;
   }
-
-  static public function surveyInterview() {
-    require_once 'civimobile.survey_interview.html';
+  static public function contactGeoDialog() {
+    require_once 'partials/dialogs/contact_geo_search.html';
     exit;
   }
-
-  static public function login() {
-    require_once 'civimobile.login.html';
+  static public function contactPartial() {
+    require_once 'partials/contact.html';
+    exit;
+  }
+  static public function editContactPartial() {
+    require_once 'partials/edit_contact.html';
+    exit;
+  }
+  static public function newContactPartial() {
+    require_once 'partials/new_contact.html';
+    exit;
+  }
+  static public function contactFormPartial() {
+    require_once 'partials/contact_form.html';
+    exit;
+  }
+  static public function eventsPartial() {
+    require_once 'partials/events.html';
+    exit;
+  }
+  static public function eventPartial() {
+    require_once 'partials/event.html';
+    exit;
+  }
+  static public function editEventPartial() {
+    require_once 'partials/edit_event.html';
+    exit;
+  }
+  static public function eventParticipantsPartial() {
+    require_once 'partials/event_participants.html';
+    exit;
+  }
+  static public function checkInParticipantDialog() {
+    require_once 'partials/dialogs/check_in_participant.html';
+    exit;
+  }
+  static public function newParticipantDialog() {
+    require_once 'partials/dialogs/new_participant.html';
+    exit;
+  }
+  static public function newMessageDialog() {
+    require_once 'partials/dialogs/message.html';
+    exit;
+  }
+  static public function membershipsPartial() {
+    require_once 'partials/memberships.html';
+    exit;
+  }
+  static public function newMembershipDialog() {
+    require_once 'partials/dialogs/new_membership.html';
+    exit;
+  }
+  static public function membershipPartial() {
+    require_once 'partials/membership.html';
+    exit;
+  }
+  static public function editMembershipPartial() {
+    require_once 'partials/edit_membership.html';
+    exit;
+  }
+  static public function membershipFormPartial() {
+    require_once 'partials/membership_form.html';
+    exit;
+  }
+  static public function newMembershipPartial() {
+    require_once 'partials/new_membership.html';
+    exit;
+  }
+  static public function newContributionPartial() {
+    require_once 'partials/new_contribution.html';
+    exit;
+  }
+  static public function editContributionPartial() {
+    require_once 'partials/edit_contribution.html';
+    exit;
+  }
+  static public function contributionFormPartial() {
+    require_once 'partials/contribution_form.html';
+    exit;
+  }
+  static public function donationsPartial() {
+    require_once 'partials/donations.html';
     exit;
   }
 

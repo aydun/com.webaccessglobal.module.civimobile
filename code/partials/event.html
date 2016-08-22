@@ -1,0 +1,30 @@
+<ul class='subheader menu horizontal-menu'>
+    <li class='left icon' ui-sref='^.^.list'><i class='icon-back'></i></li>
+    <li class='middle-item'><h3>{{ event.event.title }}</h3></li>
+    <li class='right icon' ui-sref='^.edit'><i class='icon-edit'></i></li>
+    <li class='right icon' ui-sref='^.participants'><i class='icon-users'></i></li>
+</ul>
+<div class='content'>
+    <form class='pure-form pure-form-aligned'>
+        <div class='pure-control-group' ng-show='event.address.street_address'>
+            <label>Address</label>
+            <div class='value'>{{ event.address.street_address + ', ' + event.address.city + ', ' + event.address.state.value + ', ' + event.address.postal_code + ', ' + event.address.country.value }}</div>
+        </div>
+        <div class='pure-control-group' ng-show='event.event.start_date'>
+            <label>Starts at</label>
+            <div class='value'>{{ event.event.start_date | date : 'h:mm a, EEE d MMMM, y' }}</div>
+        </div>
+        <div class='pure-control-group' ng-show='event.event.end_date'>
+            <label>Ends at</label>
+            <div class='value'>{{ event.event.end_date | date : 'h:mm a, EEE d MMMM, y' }}</div>
+        </div>
+        <div class='pure-control-group' ng-show='event.event.summary'>
+            <label>Summary</label>
+            <div class='value'>{{ event.event.summary }}</div>
+        </div>
+        <div class='pure-control-group' ng-show='event.event.description'>
+            <label>Description</label>
+            <div class='value'>{{ event.event.description }}</div>
+        </div>
+    </form>
+</div>

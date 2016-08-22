@@ -1,0 +1,52 @@
+<!--<div class='error' ng-show='contact.error'></div>-->
+<form class='pure-form pure-form-aligned'>
+    <div class='pure-control-group' ng-repeat='f in contact.fields' ng-switch='f.type'>
+        <label for='{{f.field_name}}'>{{ f.label }}</label>
+        <input ng-switch-default type='text' id='{{f.field_name}}' ng-model='contact.contact[f.field_name]' ng-required='f.required'>
+        <input ng-switch-when='Select Date' type='date' id='{{f.field_name}}' ng-model='contact.contact[f.field_name].key'>
+        <select ng-switch-when='Select' id='{{f.field_name}}' ng-model='contact.contact[f.field_name].key' ng-options='o.key as o.value for o in f.options' ng-required='f.required'></select>
+        <input ng-switch-when='CheckBox' type='checkbox' id='{{f.field_name}}' ng-model='contact.contact[f.field_name].key' ng-true-value='1', ng-false-value='0'>
+    </div>
+    <div ng-if='contact.hasEmail'>
+        <br>
+        <legend>Email</legend>
+        <div class='pure-control-group'>
+            <label class='top'>Email addresses</label>
+            <field-set class='pure-group'>
+                <input ng-repeat='e in contact.emails' type='email' id='email-{{e.id}}' ng-model='e.email' ng-blur='e.email || contact.removeEmail()'>
+                <input type='email' id='email-new' ng-model='contact.newEmail' placeholder='Add new' ng-blur='contact.addEmail()'>
+            </field-set>
+        </div>
+        <div class='pure-control-group'>
+            <label>Primary</label>
+            <select ng-model='contact.primaryEmail' ng-options='e.id as e.email for e in contact.emails'></select>
+        </div>
+        <div class='pure-control-group'>
+            <label>Billing</label>
+            <select ng-model='contact.billingEmail' ng-options='e.id as e.email for e in contact.emails'></select>
+        </div>
+        <div class='pure-control-group'>
+            <label>Bulkmail</label>
+            <select ng-model='contact.bulkmailEmail' ng-options='e.id as e.email for e in contact.emails'></select>
+        </div>
+    </div>
+    <div ng-if='contact.hasPhone'>
+        <br>
+        <legend>Phone</legend>
+        <div class='pure-control-group'>
+            <label class='top'>Phone numbers</label>
+            <field-set class='pure-group'>
+                <input ng-repeat='p in contact.phones' type='tel' id='phone-{{e.id}}' ng-model='p.phone' ng-blur='p.phone || contact.removePhone()'>
+                <input type='tel' id='phone-new' ng-model='contact.newPhone' placeholder='Add new' ng-blur='contact.addPhone()'>
+            </field-set>
+        </div>
+        <div class='pure-control-group'>
+            <label>Primary</label>
+            <select ng-model='contact.primaryPhone' ng-options='p.id as p.phone for p in contact.phones'></select>
+        </div>
+        <div class='pure-control-group'>
+            <label>Billing</label>
+            <select ng-model='contact.billingPhone' ng-options='p.id as p.phone for p in contact.phones'></select>
+        </div>
+    </div>
+</form>

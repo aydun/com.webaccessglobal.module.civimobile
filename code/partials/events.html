@@ -1,0 +1,13 @@
+<ul class='subheader menu horizontal-menu'>
+    <li class='left icon' ui-sref='home'><i class='icon-back'></i></li>
+    <li class='middle-item'><input class='holo' type='search' name='events_search' placeholder='Search' ng-model='events.query' ng-change='events.search()' /></li>
+</ul>
+<div class='content'>
+    <div vs-repeat vs-excess='4'>
+        <div class='list-item' ng-repeat='event in events.events' ui-sref='^.detail.view({ id: event.id })'>
+            <div class='list-item-label'><p>{{ event.event_title }}</p></div>
+        </div>
+    </div>
+    <div class='empty-list' ng-show='events.events.length == 0 && events.loading == 0'><p>No results</p></div>
+    <div class='empty-list' ng-show='events.events.length == 0 && events.loading > 0'><p>Loading...</p></div>
+</div>

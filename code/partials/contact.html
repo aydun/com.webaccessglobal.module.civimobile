@@ -1,0 +1,46 @@
+<ul class='subheader menu horizontal-menu'>
+    <li class='left icon' ui-sref='^.^.list'><i class='icon-back'></i></li>
+    <li class='middle-item'><h3>{{ contact.contact.display_name }}</h3></li>
+    <li class='right icon' ui-sref='^.edit'><i class='icon-edit'></i></li>
+    <li class='right icon' ui-sref='contributions.new({type:1,source:"CiviMobile: donation",cId:contact.contact.id,name:contact.contact.display_name})'><i class='icon-dollar'></i></li>
+</ul>
+<div class='content'>
+    <form class='pure-form pure-form-aligned'>
+        <div class='pure-control-group' ng-repeat='f in contact.fields' ng-show='contact.contact[f.field_name]'>
+            <label>{{ f.label }}</label>
+            <div class='value'>{{ contact.contact[f.field_name].value ? contact.contact[f.field_name].value : contact.contact[f.field_name] }}</div>
+        </div>
+        <div ng-if='contact.hasEmail && contact.emails.length > 0'>
+            <br>
+            <legend>Email</legend>
+            <div ng-repeat='e in contact.emails'>
+                <center>
+                    <a class='pure-button pure-button-secondary' href='mailto:{{e.email}}'>
+                        {{ e.email }}
+                        <span class='label'>
+                            {{ e.is_primary == '1' ? ' (primary)' : '' }}
+                            {{ e.is_billing == '1' ? ' (billing)' : '' }}
+                            {{ e.is_bulkmail == '1' ? ' (bulk mail)' : '' }}
+                        </span>
+                    </a>
+                </center>
+            </div>
+        </div>
+        <div ng-if='contact.hasPhone && contact.phones.length > 0'>
+            <br>
+            <legend>Phone</legend>
+            <div ng-repeat='p in contact.phones'>
+                <center>
+                    <a class='pure-button pure-button-secondary' href='tel:{{p.phone.split(" ").join("")}}'>
+                        {{ p.phone }}
+                        <span class='label'>
+                            {{ p.is_primary == '1' ? ' (primary)' : '' }}
+                            {{ p.is_billing == '1' ? ' (billing)' : '' }}
+                            {{ p.is_bulkmail == '1' ? ' (bulk mail)' : '' }}
+                        </span>
+                    </a>
+                </center>
+            </div>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,344 @@
+#main-nav button {
+    width: 10em;
+}
+#header {
+    position: fixed;
+    top: 0em;
+    width: 100%;
+    height: 3.5em;
+    z-index: 3;
+    background-color: #FFF;
+    text-align: center;
+    box-shadow: 0em 0em 0.5em #888;
+}
+#header > h3 {
+    margin: 1em;
+}
+#logo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: 1.25rem;
+    height: 2.3em;
+    width: 2.3em;
+    padding: 0.25em;
+    z-index: 4;
+}
+.subheader {
+    position: fixed;
+    top: 3.5em;
+    width: 100%;
+    height: 3.5em;
+    z-index: 2;
+    background-color: #EEE;
+    border-bottom: 1px solid #DDD;
+}
+.content {
+    position: absolute;
+    top: 3.5em;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    max-height: 100%;
+    overflow: scroll;
+}
+.content > *[vs-repeat],
+.dialog-content > *[vs-repeat] {
+    max-height: 100%;
+    width: 100%;
+    overflow: scroll;
+}
+#main {
+    position: absolute;
+    top: 3.5em;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+.menu {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+.vertical-menu {
+    align-content: center;
+}
+.horizonatal-menu {
+    display: inline;
+}
+.icon {
+    height: 3.5rem;
+    width: 3.5rem;
+    display: inline-block;
+    font-size: 1.75rem;
+    text-align: center;
+    color: #555;
+    margin: 0;
+    padding: 0;
+    cursor: pointer;
+}
+.icon:hover {
+    background-color: #DDD;
+}
+.middle-item {
+    position: absolute;
+    width: 50%;
+    left: 25%;
+}
+.middle-item > h3 {
+    font-size: 1.125em;
+    font-weight: normal;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.left {
+    float: left;
+}
+.right {
+    float: right;
+}
+.pure-button {
+    margin: 0.25em;
+}
+.button-large {
+    font-size: 125%;
+}
+.center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+}
+@media only screen and (max-height : 25em) {
+    #main-nav {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        margin: 0.5em 0;
+        transform: translate(-50%, 0);
+        -webkit-transform: translate(-50%, 0);
+        -moz-transform: translate(-50%, 0);
+        -ms-transform: translate(-50%, 0);
+        -o-transform: translate(-50%, 0);
+    }
+}
+input.holo[type='search'] {
+    width: 100%;
+    margin: 0.75rem auto;
+    padding: 0.25em 0 0.375em 0;
+    font-size: 112.5%;
+    outline: none;
+    border: none;
+    background: bottom left linear-gradient(#A9A9A9, #A9A9A9) no-repeat, bottom center linear-gradient(#A9A9A9, #A9A9A9) repeat-x, bottom right linear-gradient(#A9A9A9, #A9A9A9) no-repeat;
+    background-size: 1px 6px, 1px 1px, 1px 6px;
+    text-align: center;
+}
+input.holo[type='search']:hover, input.holo[type='search']:focus {
+    background: bottom left linear-gradient(#81C459, #81C459) no-repeat, bottom center linear-gradient(#81C459, #81C459) repeat-x, bottom right linear-gradient(#81C459, #81C459) no-repeat;
+    background-size: 1px 6px, 1px 1px, 1px 6px;
+}
+.list-item {
+    width: 100%;
+    height: 3.5em;
+    position: relative;
+    border-bottom: 1px solid #DDD;
+    cursor: pointer;
+    z-index: 0;
+}
+.list-item:hover {
+    background-color: #F8F8F8;
+}
+.list-item-label {
+    height: 3.5rem;
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    display: inline-block;
+    font-size: 1.125em;
+    padding: 0 0.5em;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.shift-right {
+    left: 3.5rem;
+}
+.empty-list {
+    padding: 0.5em;
+    text-align: center;
+}
+/* FIXME change to use ems? Requires changing media query in pure-css */
+.pure-form-aligned .pure-control-group label {
+    max-width: 230px;
+    width: 100%;
+    margin-right: 10px;
+    color: #999;
+    vertical-align: middle;
+}
+.pure-form-aligned input,
+.pure-form-aligned select,
+.pure-form-aligned textarea,
+.pure-form-aligned field-set {
+    display: inline-block;
+    max-width: 220px;
+    width: 100%;
+}
+.pure-form-aligned label.top {
+    vertical-align: top;
+    margin-top: 0.75em;
+}
+.pure-form-aligned textarea {
+    height: 7.85em;
+}
+form.pure-form-aligned.pure-form {
+    max-width: 480px;
+    width: 100%;
+    padding: 1em 0 0.5em 0;
+    margin: 0 auto;
+}
+legend {
+    text-align: center;
+}
+@media only screen and (max-width : 480px) {
+    .pure-control-group {
+        width: 230px;
+        margin: 0 auto;
+    }
+    .pure-form input[type=text], .pure-form input[type=email], .pure-form input[type=number] {
+        display: inline-block;
+        margin-bottom: 0;
+    }
+    .pure-form button[type=submit] {
+        margin: 0.25em;
+    }
+}
+.pure-form input[type]:focus,
+.pure-form textarea:focus,
+.pure-form select:focus {
+    border-color: #81C459;
+}
+.tabs {
+    position: absolute;
+    width: 100%;
+    height: 3.5em;
+    border-bottom: 1px solid #DDD;
+    text-align: center;
+    background-color: #FFF;
+    white-space: nowrap;
+    overflow-x: scroll;
+    z-index: 1;
+}
+.tabs > .tab {
+    display: inline-block;
+    height: 1.5rem;
+    font-size: 1.125em;
+    padding: 1rem 0.5rem 0.875rem 0.5rem;
+    color: #555;
+    font-weight: 300;
+    cursor: pointer;
+}
+.tabs > .tab:hover {
+    background-color: #DDD;
+}
+.tab.selected {
+    border-bottom: 0.125em solid #81C459;
+}
+.tab.not-selected:hover {
+    border-bottom: 0.125em solid #DDD;
+}
+.checkbox {
+    width: 3.5em;
+    text-align: center;
+}
+.checkbox input {
+    height: 3.5em;
+}
+.dialog-header {
+    position: fixed;
+    top: 0em;
+    width: 100%;
+    height: 3.5em;
+    background-color: #DDD;
+    border-bottom: 1px solid #CCC;
+    border-radius: 0.5em 0.5em 0 0;
+    z-index: 10;
+}
+.dialog-content {
+    position: fixed;
+    top: 3.5em;
+    bottom: 0;
+    width: 100%;
+    overflow-y: scroll;
+}
+.dialog-center {
+    text-align: center;
+}
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+input[type=date]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    display: none;
+}
+form.pure-form > input[type='number'] {
+    width: 3em;
+}
+form.pure-form > input[type='text'] {
+    width: 7em;
+}
+.pure-button-primary {
+    color: #FFF;
+    background-color: #81C459;
+}
+.input-left {
+    position: absolute;
+    width: 3.5rem;
+    left: 0;
+}
+.input-right {
+    position: absolute;
+    left: 3.75rem;
+    right: 0;
+}
+.dropdown {
+    font-family: 'fontello', sans-serif;
+}
+.dropdown-content {
+    display: none;
+    position: absolute;
+    width: 100%;
+    background-color: #EEE;
+    border: 1px solid #DDD;
+    box-sizing: border-box;
+    z-index: 1010;
+}
+.dropdown:hover .dropdown-content,
+.dropdown:focus .dropdown-content {
+    display: block;
+}
+.dropdown-content .icon {
+    box-sizing: border-box;
+    margin: 0 -1px;
+}
+.label {
+    font-style: italic;
+    color: #777;
+}
+.pure-form div.value {
+    display: inline-block;
+    vertical-align: top;
+    width: 100%;
+    max-width: 220px;
+}
+.pure-button.value {
+    margin: 0;
+}
+
