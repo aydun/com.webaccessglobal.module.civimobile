@@ -1,5 +1,5 @@
 'use strict';
-angular.module('civimobile').service('ApiService', ['$http', '$q', '$cacheFactory', function ($http, $q, $cacheFactory) {
+angular.module('civimobile').service('ApiService', ['$http', '$q', '$cacheFactory', 'ngDialog', function ($http, $q, $cacheFactory, ngDialog) {
     var URL = 'ajax/rest';
 
     var indProfileId = defaultProfileIds.Individual;
@@ -28,6 +28,9 @@ angular.module('civimobile').service('ApiService', ['$http', '$q', '$cacheFactor
         }
 
         function success(data) {
+            if (data.data.is_error) {
+                return failure(data.data.error_message);
+            }
             var result = data.data.values || data.data.result || data.data;
             result = then(result);
             if (key) {
@@ -35,9 +38,8 @@ angular.module('civimobile').service('ApiService', ['$http', '$q', '$cacheFactor
             }
             return result;
         }
-        function failure() {
-            // FIXME
-            console.log('An error occured.')
+        function failure(msg) {
+            ngDialog.open({ template: 'mobile/partials/dialogs/message', data: 'An error occured' + (msg ? ': ' + msg : '') });
         }
 
         if (!isPost) {

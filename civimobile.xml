@@ -72,10 +72,6 @@
     <page_callback>civimobile::newMessageDialog</page_callback>
   </item>
   <item>
-    <path>civicrm/mobile/partials/surveys</path>
-    <page_callback>civimobile::surveysPartial</page_callback>
-  </item>
-  <item>
     <path>civicrm/mobile/partials/memberships</path>
     <page_callback>civimobile::membershipsPartial</page_callback>
   </item>
@@ -114,14 +110,6 @@
   <item>
     <path>civicrm/mobile/logout</path>
     <page_callback>civimobile::logout</page_callback>
-  </item>
-  <item>
-    <path>civicrm/mobile/survey/contacts</path>
-    <page_callback>civimobile::surveycontacts</page_callback>
-  </item>
-  <item>
-    <path>civicrm/mobile/survey/interview</path>
-    <page_callback>civimobile::surveyInterview</page_callback>
   </item>
   <item>
     <path>civicrm/admin/setting/mobile</path>

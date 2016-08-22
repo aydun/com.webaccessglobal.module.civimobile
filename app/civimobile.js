@@ -142,13 +142,6 @@ angular.module('civimobile', ['ui.router', 'ngDialog', 'ct.ui.router.extras.core
                 templateUrl: 'mobile/partials/edit_contribution',
                 controller: 'ContributionController',
                 controllerAs: 'contribution'
-            })
-            .state('surveys', {
-                url: '/surveys',
-                templateUrl: 'mobile/partials/surveys',
-                data: {
-                    title: 'Manage surveys'
-                }
             });
     }])
     // This is necessary to access the Civi api without throwing an error
