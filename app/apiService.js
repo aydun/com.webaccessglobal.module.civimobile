@@ -399,6 +399,7 @@ angular.module('civimobile').service('ApiService', ['$http', '$q', '$cacheFactor
         }
         return request('Membership', 'getsingle', params).then(function (value) {
             var cStatusOptions = value['api.Contribution.getoptions'].values;
+            delete value['api.Contribution.getoptions'];
             value.display_name = value['contact_id.display_name'];
             delete value['contact_id.display_name'];
             value.membership_name = value['membership_type_id.name'];

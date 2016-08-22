@@ -10,7 +10,6 @@ angular.module('civimobile').controller('ContributionController', ['$state', '$s
     if ($stateParams.id) {
         // Edit contribution
         ApiService.getContribution($stateParams.id).then(function (c) {
-            console.log(c);
             c.total_amount = parseInt(c.total_amount);
             x.contribution = c;
             x.name = c.display_name;

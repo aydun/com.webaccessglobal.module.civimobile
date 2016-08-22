@@ -3,7 +3,6 @@ angular.module('civimobile').controller('MembershipController', ['$state', '$sta
     this.id = $stateParams.id; // Membership id if editing, contact id if creating.
     this.membership = {};
     this.name = '';
-    this.statusOptions = [];
     this.payments;
 
     // So we can refer to 'this' in promises.
@@ -34,28 +33,21 @@ angular.module('civimobile').controller('MembershipController', ['$state', '$sta
         this.membership.start_date = now;
         then.setFullYear(then.getFullYear() + 1)
         this.membership.end_date = then;
+        this.membership.source = 'CiviMobile sign up'
         ApiService.getMembershipTypes().then(function (values) {
             // This request will have been cached so limited cost.
             x.membership.membership_type_id = values[0].id;
-        });
-        ApiService.getMembershipStatusOptions().then(function (values) {
-            x.statusOptions = values;
-            x.membership.status = values[0];
         });
         this.name = $stateParams.name;
     }
 
     this.newContribution = function () {
         var name = this.membership.display_name || this.name;
-        $state.go('contributions.new', { cId: this.membership.contact_id, name: name, mId: this.membership.id, type: 2, source: x.membership.membership_name + ' Membership: Civimobile' });
+        $state.go('contributions.new', { cId: this.membership.contact_id, name: name, mId: this.membership.id, type: 2, source: x.membership.membership_name + ' Membership: CiviMobile' });
     }
 
     this.save = function () {
-        var m = angular.copy(this.membership);
-        m.status_id = m.status.key;
-        delete m.status;
-        delete m.statusOptions;
-        ApiService.saveMembership(m).then(function (data) {
+        ApiService.saveMembership(this.membership).then(function (data) {
             $state.go('memberships.detail.view', { id: data[0].id }, { reload: true });
         });
     }
