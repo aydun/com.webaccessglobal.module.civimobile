@@ -75,4 +75,3 @@ function civimobile_civicrm_navigationMenu( &$params ) {
     }
   }
 }
-

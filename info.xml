@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="iso-8859-1" ?>
+<?xml version="1.0" encoding="iso-8859-1"?>
 <extension key="com.webaccessglobal.module.civimobile" type="module">
   <file>civimobile</file>
   <name>CiviMobile</name>
@@ -14,12 +14,21 @@
     <author>Web Access</author>
     <email>info@webaccessglobal.com</email>
   </maintainer>
-  <releaseDate>2016-08-22</releaseDate>
-  <version>3.0</version>
+  <releaseDate>2024-07-01</releaseDate>
+  <version>3.1</version>
   <develStage>beta</develStage>
   <compatibility>
-    <ver>4.6</ver>
-    <ver>4.7</ver>
+    <ver>5.74</ver>
   </compatibility>
   <comments>This version developed by Adam Hillier as a GSOC 2016 project.</comments>
+  <civix>
+    <namespace>CRM/Civimobile</namespace>
+    <format>23.02.1</format>
+  </civix>
+  <mixins>
+    <mixin>smarty-v2@1.0.1</mixin>
+  </mixins>
+  <classloader>
+    <psr4 prefix="Civi\" path="Civi"/>
+  </classloader>
 </extension>
