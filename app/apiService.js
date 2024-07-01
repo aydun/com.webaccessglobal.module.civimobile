@@ -215,8 +215,12 @@ angular.module('civimobile').service('ApiService', ['$http', '$q', '$cacheFactor
     }
 
     this.eventSearch = function (q) {
+        var d = new Date();
+        d.setDate(d.getDate()-1); // yesterday
+
         var params = {
             title: {'LIKE': '%' + q + '%'},
+            start_date: {'>=': d.toISOString().split('T')[0]},
             return: ['event_title','id']
         };
         return request('Event', 'get', params);
